@@ -1,0 +1,17 @@
+Objective:
+Explore multilabel attribute classification using captions and a small amount of annotations
+
+Milestones:
+1. train a supervised method with the training set of annotations to set a baseline (1200 images)
+    - Set clip or a two-stream framework for classification setup - Abhash / Dhruv
+    - Set the evaluation system with the code provided - Rohit
+    - Set up the framework
+    - a. evaluate with clip method -zero shot mode (use the bigger objects at least 20 pixels)
+    - b. train clip supervised with the training set 
+
+2. use the bigger data with captions from coco captions to train the method (80000)
+    - train also adding the captions from coco by icm loss
+    - a. augmentation of the text (translation method - use synonyms and use use a hand-made translation system)
+    - b. augmentation of images 
+    - c. detect nouns in the captions (noun phrases) - run the bbox of training set - select the bbox which has high correspondance based on clip
+    - d. more annotations

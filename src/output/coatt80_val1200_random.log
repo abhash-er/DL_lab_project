@@ -1,0 +1,560 @@
+----------ALL----------
+mAP: 8.3381
+Per-class (threshold 0.50):
+- recall: 49.6059
+- precision: 8.1779
+- f1: 11.4716
+- bacc: 49.7637
+Per-class (top 8):
+- recall: 6.7738
+- precision: 8.1628
+- f1: 5.4358
+Overall (threshold 0.50):
+- recall: 49.8361
+- precision: 8.3545
+- f1: 14.3101
+Overall (top 8):
+- recall: 6.6074
+- precision: 8.4002
+- f1: 7.3967
+----------HEAD----------
+mAP: 36.9285
+Per-class (threshold 0.50):
+- recall: 49.7602
+- precision: 36.9081
+- f1: 39.7255
+- bacc: 49.9806
+Per-class (top 8):
+- recall: 6.4813
+- precision: 36.3481
+- f1: 10.6358
+Overall (threshold 0.50):
+- recall: 49.8388
+- precision: 37.4639
+- f1: 42.7743
+Overall (top 8):
+- recall: 6.5175
+- precision: 36.8946
+- f1: 11.0781
+----------MEDIUM----------
+mAP: 8.7772
+Per-class (threshold 0.50):
+- recall: 49.9656
+- precision: 8.6572
+- f1: 14.3068
+- bacc: 49.9546
+Per-class (top 8):
+- recall: 6.7705
+- precision: 8.7483
+- f1: 7.2045
+Overall (threshold 0.50):
+- recall: 49.9442
+- precision: 8.2184
+- f1: 14.1142
+Overall (top 8):
+- recall: 6.7072
+- precision: 8.3662
+- f1: 7.4454
+----------TAIL----------
+mAP: 1.2042
+Per-class (threshold 0.50):
+- recall: 49.2828
+- precision: 1.0988
+- f1: 2.1944
+- bacc: 49.5602
+Per-class (top 8):
+- recall: 6.8459
+- precision: 1.1275
+- f1: 2.1181
+Overall (threshold 0.50):
+- recall: 49.1420
+- precision: 1.0473
+- f1: 2.0509
+Overall (top 8):
+- recall: 6.7974
+- precision: 1.1010
+- f1: 1.8950
+----------CLEANLINESS----------
+mAP: 11.0349
+Per-class (threshold 0.50):
+- recall: 54.2258
+- precision: 11.3218
+- f1: 17.6373
+- bacc: 52.2461
+Per-class (top 8):
+- recall: 7.5491
+- precision: 11.1253
+- f1: 8.0984
+Overall (threshold 0.50):
+- recall: 54.1985
+- precision: 11.4043
+- f1: 18.8436
+Overall (top 8):
+- recall: 7.3064
+- precision: 11.6118
+- f1: 8.9692
+----------COLOR----------
+mAP: 4.2151
+Per-class (threshold 0.50):
+- recall: 51.2098
+- precision: 4.0671
+- f1: 7.2167
+- bacc: 50.6205
+Per-class (top 8):
+- recall: 6.3193
+- precision: 3.9993
+- f1: 4.0717
+Overall (threshold 0.50):
+- recall: 49.8801
+- precision: 4.1073
+- f1: 7.5896
+Overall (top 8):
+- recall: 6.3988
+- precision: 4.0069
+- f1: 4.9279
+----------PATTERN----------
+mAP: 3.4586
+Per-class (threshold 0.50):
+- recall: 47.1808
+- precision: 3.3742
+- f1: 4.9162
+- bacc: 48.4385
+Per-class (top 8):
+- recall: 8.6993
+- precision: 3.4045
+- f1: 3.0438
+Overall (threshold 0.50):
+- recall: 49.5811
+- precision: 3.1814
+- f1: 5.9791
+Overall (top 8):
+- recall: 6.8821
+- precision: 3.3705
+- f1: 4.5249
+----------COLOR QUANTITY----------
+mAP: 22.7824
+Per-class (threshold 0.50):
+- recall: 50.0556
+- precision: 22.6986
+- f1: 27.3332
+- bacc: 49.8824
+Per-class (top 8):
+- recall: 7.1517
+- precision: 22.0842
+- f1: 9.1226
+Overall (threshold 0.50):
+- recall: 49.0587
+- precision: 22.5464
+- f1: 30.8944
+Overall (top 8):
+- recall: 6.5153
+- precision: 22.0075
+- f1: 10.0541
+----------COOKED----------
+mAP: 5.8636
+Per-class (threshold 0.50):
+- recall: 50.8483
+- precision: 5.5296
+- f1: 9.9741
+- bacc: 49.9470
+Per-class (top 8):
+- recall: 6.7053
+- precision: 5.6395
+- f1: 6.1254
+Overall (threshold 0.50):
+- recall: 50.8957
+- precision: 5.5307
+- f1: 9.9773
+Overall (top 8):
+- recall: 6.7439
+- precision: 5.6338
+- f1: 6.1391
+----------FACE EXPRESSION----------
+mAP: 1.5708
+Per-class (threshold 0.50):
+- recall: 60.7718
+- precision: 1.4286
+- f1: 2.6106
+- bacc: 55.2899
+Per-class (top 8):
+- recall: 6.3231
+- precision: 1.6553
+- f1: 2.7646
+Overall (threshold 0.50):
+- recall: 47.8200
+- precision: 1.4066
+- f1: 2.7329
+Overall (top 8):
+- recall: 7.4543
+- precision: 1.6667
+- f1: 2.7242
+----------GENDER----------
+mAP: 11.3714
+Per-class (threshold 0.50):
+- recall: 51.2286
+- precision: 11.2799
+- f1: 18.0963
+- bacc: 50.5679
+Per-class (top 8):
+- recall: 7.7025
+- precision: 12.4694
+- f1: 9.1093
+Overall (threshold 0.50):
+- recall: 51.3793
+- precision: 11.2410
+- f1: 18.4463
+Overall (top 8):
+- recall: 7.6437
+- precision: 12.2243
+- f1: 9.4059
+----------GROUP----------
+mAP: 50.3098
+Per-class (threshold 0.50):
+- recall: 49.5826
+- precision: 49.9689
+- f1: 37.2617
+- bacc: 49.8394
+Per-class (top 8):
+- recall: 8.0252
+- precision: 51.6116
+- f1: 10.4294
+Overall (threshold 0.50):
+- recall: 49.8283
+- precision: 49.7988
+- f1: 49.8136
+Overall (top 8):
+- recall: 6.7496
+- precision: 52.5830
+- f1: 11.9635
+----------LENGTH----------
+mAP: 7.3258
+Per-class (threshold 0.50):
+- recall: 48.5901
+- precision: 7.2044
+- f1: 12.0224
+- bacc: 49.3715
+Per-class (top 8):
+- recall: 6.6075
+- precision: 6.5378
+- f1: 5.3892
+Overall (threshold 0.50):
+- recall: 49.6060
+- precision: 6.8905
+- f1: 12.1002
+Overall (top 8):
+- recall: 5.8231
+- precision: 6.2647
+- f1: 6.0359
+----------TONE----------
+mAP: 17.4296
+Per-class (threshold 0.50):
+- recall: 49.4336
+- precision: 17.2964
+- f1: 23.0398
+- bacc: 49.8883
+Per-class (top 8):
+- recall: 7.4552
+- precision: 17.6115
+- f1: 9.0216
+Overall (threshold 0.50):
+- recall: 50.3174
+- precision: 17.0996
+- f1: 25.5249
+Overall (top 8):
+- recall: 7.0087
+- precision: 17.6490
+- f1: 10.0331
+----------TYPE----------
+mAP: 5.7746
+Per-class (threshold 0.50):
+- recall: 45.8831
+- precision: 5.7875
+- f1: 9.8751
+- bacc: 47.9874
+Per-class (top 8):
+- recall: 5.0517
+- precision: 4.8999
+- f1: 4.3598
+Overall (threshold 0.50):
+- recall: 49.5726
+- precision: 5.8216
+- f1: 10.4196
+Overall (top 8):
+- recall: 5.3724
+- precision: 4.8405
+- f1: 5.0926
+----------MATERIAL----------
+mAP: 5.4565
+Per-class (threshold 0.50):
+- recall: 51.1189
+- precision: 5.2969
+- f1: 8.8628
+- bacc: 50.5250
+Per-class (top 8):
+- recall: 8.8933
+- precision: 5.3372
+- f1: 5.0211
+Overall (threshold 0.50):
+- recall: 50.5780
+- precision: 5.3150
+- f1: 9.6192
+Overall (top 8):
+- recall: 6.9627
+- precision: 5.4259
+- f1: 6.0990
+----------MATURITY----------
+mAP: 18.7361
+Per-class (threshold 0.50):
+- recall: 48.9041
+- precision: 18.7903
+- f1: 23.1939
+- bacc: 49.4693
+Per-class (top 8):
+- recall: 4.8289
+- precision: 17.7306
+- f1: 6.4606
+Overall (threshold 0.50):
+- recall: 49.7785
+- precision: 18.6264
+- f1: 27.1090
+Overall (top 8):
+- recall: 6.2658
+- precision: 17.6000
+- f1: 9.2415
+----------OPTICAL PROPERTY----------
+mAP: 16.3023
+Per-class (threshold 0.50):
+- recall: 49.9972
+- precision: 16.3116
+- f1: 19.1454
+- bacc: 49.9735
+Per-class (top 8):
+- recall: 7.0484
+- precision: 15.9563
+- f1: 6.7129
+Overall (threshold 0.50):
+- recall: 50.1201
+- precision: 16.4034
+- f1: 24.7172
+Overall (top 8):
+- recall: 6.4841
+- precision: 16.1194
+- f1: 9.2482
+----------ORDER----------
+mAP: 8.1730
+Per-class (threshold 0.50):
+- recall: 48.1739
+- precision: 7.9741
+- f1: 13.4552
+- bacc: 49.0832
+Per-class (top 8):
+- recall: 6.1020
+- precision: 7.8439
+- f1: 6.6614
+Overall (threshold 0.50):
+- recall: 48.3969
+- precision: 7.9748
+- f1: 13.6933
+Overall (top 8):
+- recall: 6.5649
+- precision: 7.9044
+- f1: 7.1726
+----------POSITION----------
+mAP: 28.8174
+Per-class (threshold 0.50):
+- recall: 48.1959
+- precision: 28.5774
+- f1: 30.8305
+- bacc: 49.2656
+Per-class (top 8):
+- recall: 6.0383
+- precision: 28.3660
+- f1: 8.8566
+Overall (threshold 0.50):
+- recall: 49.1515
+- precision: 28.0199
+- f1: 35.6925
+Overall (top 8):
+- recall: 6.2565
+- precision: 26.8015
+- f1: 10.1448
+----------SIZE----------
+mAP: 19.4428
+Per-class (threshold 0.50):
+- recall: 50.5038
+- precision: 19.1693
+- f1: 27.6792
+- bacc: 50.0481
+Per-class (top 8):
+- recall: 7.1906
+- precision: 20.3330
+- f1: 10.5860
+Overall (threshold 0.50):
+- recall: 50.6329
+- precision: 19.1147
+- f1: 27.7524
+Overall (top 8):
+- recall: 7.1952
+- precision: 20.3008
+- f1: 10.6247
+----------STATE----------
+mAP: 4.3483
+Per-class (threshold 0.50):
+- recall: 41.4776
+- precision: 4.2964
+- f1: 7.8509
+- bacc: 45.5638
+Per-class (top 8):
+- recall: 4.1087
+- precision: 3.8909
+- f1: 5.0112
+Overall (threshold 0.50):
+- recall: 49.3357
+- precision: 4.2518
+- f1: 7.8289
+Overall (top 8):
+- recall: 5.6983
+- precision: 3.8015
+- f1: 4.5605
+----------TEXTURE----------
+mAP: 23.0981
+Per-class (threshold 0.50):
+- recall: 48.8919
+- precision: 22.6994
+- f1: 27.9637
+- bacc: 49.4581
+Per-class (top 8):
+- recall: 7.0315
+- precision: 24.2736
+- f1: 9.7510
+Overall (threshold 0.50):
+- recall: 49.4044
+- precision: 22.5940
+- f1: 31.0075
+Overall (top 8):
+- recall: 7.0335
+- precision: 24.5383
+- f1: 10.9331
+| Name                                              	| AP	| Recall@K (8)	| B.Accuracy	| N_Pos	| N_Neg	| rand Pre.	|
+------------------------------------------------------------------------------------------------------------------------
+| cleanliness:clean/neat/tidy                       	| 0.181	| 0.0717	| 0.5207	| 753   | 3589  | 0.1734	|
+| cleanliness:unclean/untidy/dirt/dirty/muddy       	| 0.039	| 0.0793	| 0.5242	| 164   | 4178  | 0.0378	|
+| clothes color:black                               	| 0.099	| 0.0650	| 0.5075	| 785   | 7396  | 0.0960	|
+| clothes color:blue                                	| 0.072	| 0.0677	| 0.4974	| 576   | 7605  | 0.0704	|
+| clothes color:brown                               	| 0.010	| 0.1233	| 0.4852	| 73    | 8108  | 0.0089	|
+| clothes color:gray                                	| 0.036	| 0.0533	| 0.4888	| 319   | 7862  | 0.0390	|
+| clothes color:green                               	| 0.019	| 0.0935	| 0.5327	| 139   | 8042  | 0.0170	|
+| clothes color:orange                              	| 0.011	| 0.1212	| 0.5526	| 33    | 8148  | 0.0040	|
+| clothes color:pink                                	| 0.006	| 0.0179	| 0.4657	| 56    | 8125  | 0.0068	|
+| clothes color:red                                 	| 0.027	| 0.0667	| 0.4730	| 240   | 7941  | 0.0293	|
+| clothes color:tan                                 	| 0.007	| 0.0526	| 0.5110	| 57    | 8124  | 0.0070	|
+| clothes color:violet                              	| 0.006	| 0.0833	| 0.5282	| 36    | 8145  | 0.0044	|
+| clothes color:white                               	| 0.088	| 0.0744	| 0.5068	| 699   | 7482  | 0.0854	|
+| clothes color:yellow                              	| 0.005	| 0.0192	| 0.4717	| 52    | 8129  | 0.0064	|
+| clothes pattern:checkered                         	| 0.002	| 0.0000	| 0.5015	| 12    | 7168  | 0.0017	|
+| clothes pattern:dotted/speckled/spotted           	| 0.004	| 0.1667	| 0.5258	| 18    | 7162  | 0.0025	|
+| clothes pattern:floral                            	| 0.004	| 0.0800	| 0.4859	| 25    | 7155  | 0.0035	|
+| clothes pattern:lettered                          	| 0.017	| 0.1224	| 0.5369	| 98    | 7082  | 0.0136	|
+| clothes pattern:plaid/tartan                      	| 0.004	| 0.0952	| 0.4607	| 21    | 7159  | 0.0029	|
+| clothes pattern:plain                             	| 0.101	| 0.0711	| 0.5018	| 731   | 6449  | 0.1018	|
+| clothes pattern:striped/lined/pinstriped          	| 0.016	| 0.1200	| 0.5027	| 100   | 7080  | 0.0139	|
+| clothes pattern:tiled                             	| 0.002	| 0.3333	| 0.5737	| 3     | 7177  | 0.0004	|
+| color quantity:multicolored/colorful              	| 0.054	| 0.0892	| 0.5087	| 381   | 7474  | 0.0485	|
+| color quantity:single-colored/unicolored          	| 0.453	| 0.0642	| 0.4923	| 3647  | 4208  | 0.4643	|
+| color quantity:two-colored                        	| 0.177	| 0.0612	| 0.4954	| 1390  | 6465  | 0.1770	|
+| color:black                                       	| 0.178	| 0.0604	| 0.4897	| 1474  | 6521  | 0.1844	|
+| color:blue                                        	| 0.048	| 0.0449	| 0.5240	| 379   | 7616  | 0.0474	|
+| color:brown                                       	| 0.103	| 0.0615	| 0.5126	| 829   | 7166  | 0.1037	|
+| color:gray                                        	| 0.111	| 0.0557	| 0.5007	| 880   | 7115  | 0.1101	|
+| color:green                                       	| 0.053	| 0.0793	| 0.4971	| 429   | 7566  | 0.0537	|
+| color:orange                                      	| 0.043	| 0.0737	| 0.5022	| 339   | 7656  | 0.0424	|
+| color:pink                                        	| 0.005	| 0.0488	| 0.5292	| 41    | 7954  | 0.0051	|
+| color:red                                         	| 0.073	| 0.0609	| 0.4968	| 608   | 7387  | 0.0760	|
+| color:tan                                         	| 0.044	| 0.0623	| 0.5191	| 321   | 7674  | 0.0402	|
+| color:violet                                      	| 0.004	| 0.0952	| 0.5116	| 21    | 7974  | 0.0026	|
+| color:white                                       	| 0.199	| 0.0574	| 0.4997	| 1619  | 6376  | 0.2025	|
+| color:yellow                                      	| 0.048	| 0.0668	| 0.5044	| 374   | 7621  | 0.0468	|
+| cooked:cooked/baked/warmed                        	| 0.054	| 0.0496	| 0.4891	| 464   | 8106  | 0.0541	|
+| cooked:raw/fresh                                  	| 0.063	| 0.0845	| 0.5098	| 485   | 8085  | 0.0566	|
+| face expression:angry/mad                         	| 0.001	| 0.0000	| 0.7463	| 3     | 6880  | 0.0004	|
+| face expression:disgust/frowning                  	| 0.004	| 0.0588	| 0.5716	| 17    | 6866  | 0.0025	|
+| face expression:fear/surprise                     	| 0.005	| 0.1111	| 0.4969	| 18    | 6865  | 0.0026	|
+| face expression:happy/smiling/laughing/grinning/  	| 0.036	| 0.0720	| 0.4895	| 236   | 6647  | 0.0343	|
+| face expression:neutral/calm/serious              	| 0.061	| 0.0757	| 0.4861	| 423   | 6460  | 0.0615	|
+| face expression:sad/unhappy                       	| 0.001	| 0.0000	| 0.5840	| 6     | 6877  | 0.0009	|
+| face expression:sleepy/sleeping                   	| 0.002	| 0.1250	| 0.4960	| 8     | 6875  | 0.0012	|
+| gender:female/woman/girl                          	| 0.071	| 0.0786	| 0.5006	| 547   | 7365  | 0.0691	|
+| gender:male/man/guy/boy                           	| 0.157	| 0.0754	| 0.5107	| 1193  | 6719  | 0.1508	|
+| group:group                                       	| 0.055	| 0.0945	| 0.4952	| 434   | 8011  | 0.0514	|
+| group:single                                      	| 0.951	| 0.0660	| 0.5016	| 8011  | 434   | 0.9486	|
+| hair color:black                                  	| 0.093	| 0.0692	| 0.4980	| 694   | 6773  | 0.0929	|
+| hair color:blue                                   	| 0.003	| 0.1667	| 0.5863	| 12    | 7455  | 0.0016	|
+| hair color:brown                                  	| 0.050	| 0.0873	| 0.4871	| 355   | 7112  | 0.0475	|
+| hair color:gray                                   	| 0.004	| 0.0333	| 0.4655	| 30    | 7437  | 0.0040	|
+| hair color:green                                  	| 0.001	| 0.0000	| 0.6276	| 4     | 7463  | 0.0005	|
+| hair color:orange                                 	| 0.000	| 0.0000	| 0.2505	| 1     | 7466  | 0.0001	|
+| hair color:pink                                   	| 0.001	| 0.0000	| 0.7476	| 1     | 7466  | 0.0001	|
+| hair color:red                                    	| 0.002	| 0.0588	| 0.5144	| 17    | 7450  | 0.0023	|
+| hair color:tan                                    	| 0.005	| 0.0645	| 0.5181	| 31    | 7436  | 0.0042	|
+| hair color:violet                                 	| nan	| -1.0000	| -1.0000	| 0     | 7467  | 0.0000	|
+| hair color:white                                  	| 0.008	| 0.0820	| 0.4639	| 61    | 7406  | 0.0082	|
+| hair color:yellow                                 	| 0.011	| 0.0449	| 0.4505	| 89    | 7378  | 0.0119	|
+| hair length:bald                                  	| 0.004	| 0.1034	| 0.4724	| 29    | 7402  | 0.0039	|
+| hair length:long                                  	| 0.057	| 0.0485	| 0.5039	| 433   | 6998  | 0.0583	|
+| hair length:short                                 	| 0.110	| 0.0652	| 0.4955	| 797   | 6634  | 0.1073	|
+| hair tone:dark/obscure                            	| 0.117	| 0.0767	| 0.4952	| 847   | 6557  | 0.1144	|
+| hair tone:light/bright/shiny                      	| 0.053	| 0.0727	| 0.4993	| 385   | 7019  | 0.0520	|
+| hair type:curly/curled                            	| 0.017	| 0.0458	| 0.4540	| 131   | 6860  | 0.0187	|
+| hair type:straight                                	| 0.099	| 0.0552	| 0.5057	| 688   | 6303  | 0.0984	|
+| length:long                                       	| 0.136	| 0.0542	| 0.5041	| 720   | 4623  | 0.1348	|
+| length:short                                      	| 0.060	| 0.0590	| 0.4926	| 305   | 5038  | 0.0571	|
+| material:asphalt/cement/clay/concrete/stucco      	| 0.003	| 0.1818	| 0.4362	| 11    | 7220  | 0.0015	|
+| material:ceramic/brick/ceramic/porcelain          	| 0.035	| 0.0753	| 0.5258	| 239   | 6992  | 0.0331	|
+| material:glass                                    	| 0.045	| 0.0675	| 0.4772	| 311   | 6920  | 0.0430	|
+| material:leather                                  	| 0.017	| 0.1031	| 0.5072	| 97    | 7134  | 0.0134	|
+| material:metal/metallic/aluminum/brass/copper-zi  	| 0.187	| 0.0628	| 0.5024	| 1354  | 5877  | 0.1872	|
+| material:paper/cardboard                          	| 0.033	| 0.0641	| 0.5169	| 234   | 6997  | 0.0324	|
+| material:polymers/plastic/rubber/styrofoam/polym  	| 0.091	| 0.0712	| 0.4942	| 646   | 6585  | 0.0893	|
+| material:stone/granite/cobblestone/gravel/marble  	| 0.002	| 0.1111	| 0.5832	| 9     | 7222  | 0.0012	|
+| material:textile/cloth/fabric/denim/cotton/jean/  	| 0.075	| 0.0639	| 0.4988	| 532   | 6699  | 0.0736	|
+| material:wood/wooden/bamboo/hardwood              	| 0.058	| 0.0885	| 0.5106	| 373   | 6858  | 0.0516	|
+| maturity:adult/old/aged                           	| 0.346	| 0.0654	| 0.5033	| 2903  | 5536  | 0.3440	|
+| maturity:young/baby                               	| 0.028	| 0.0311	| 0.4861	| 257   | 8182  | 0.0305	|
+| optical property:opaque                           	| 0.427	| 0.0636	| 0.4981	| 3666  | 4816  | 0.4322	|
+| optical property:reflective                       	| 0.026	| 0.0718	| 0.4948	| 209   | 8273  | 0.0246	|
+| optical property:transparent/translucent          	| 0.035	| 0.0761	| 0.5064	| 289   | 8193  | 0.0341	|
+| order:messy/disordered/unordered/disorganized/un  	| 0.051	| 0.0485	| 0.4879	| 206   | 3779  | 0.0517	|
+| order:ordered/arranged/organized                  	| 0.112	| 0.0735	| 0.4937	| 449   | 3536  | 0.1127	|
+| pattern:checkered                                 	| 0.002	| 0.0667	| 0.4153	| 15    | 5744  | 0.0026	|
+| pattern:dotted/speckled/spotted                   	| 0.007	| 0.0204	| 0.4234	| 49    | 5710  | 0.0085	|
+| pattern:floral                                    	| 0.003	| 0.0000	| 0.4244	| 17    | 5742  | 0.0030	|
+| pattern:lettered                                  	| 0.019	| 0.0469	| 0.4630	| 128   | 5631  | 0.0222	|
+| pattern:plaid/tartan                              	| 0.002	| 0.1429	| 0.4595	| 7     | 5752  | 0.0012	|
+| pattern:plain                                     	| 0.320	| 0.0655	| 0.4986	| 1831  | 3928  | 0.3179	|
+| pattern:striped/lined/pinstriped                  	| 0.048	| 0.0607	| 0.5046	| 280   | 5479  | 0.0486	|
+| pattern:tiled                                     	| 0.001	| 0.0000	| 0.4725	| 7     | 5752  | 0.0012	|
+| position:horizontal/lying                         	| 0.163	| 0.0711	| 0.4896	| 1279  | 6486  | 0.1647	|
+| position:sitting/sit                              	| 0.078	| 0.0476	| 0.4865	| 694   | 7765  | 0.0820	|
+| position:vertical/upright/standing                	| 0.623	| 0.0624	| 0.5019	| 4804  | 2961  | 0.6187	|
+| size:big/large/giant/huge                         	| 0.167	| 0.0715	| 0.4886	| 657   | 3281  | 0.1668	|
+| size:small/little/tiny                            	| 0.222	| 0.0723	| 0.5124	| 844   | 3094  | 0.2143	|
+| skin tone:dark/obscure                            	| 0.035	| 0.0950	| 0.4895	| 242   | 7501  | 0.0313	|
+| skin tone:light/bright/shiny                      	| 0.169	| 0.0647	| 0.4959	| 1329  | 6414  | 0.1716	|
+| state:closed                                      	| 0.054	| 0.0807	| 0.4960	| 322   | 5720  | 0.0533	|
+| state:covered                                     	| 0.009	| 0.0161	| 0.4321	| 62    | 5980  | 0.0103	|
+| state:cracked                                     	| 0.001	| 0.0000	| 0.4122	| 3     | 6039  | 0.0005	|
+| state:dilapidated/ruined/broken                   	| 0.001	| 0.0000	| 0.3292	| 6     | 6036  | 0.0010	|
+| state:dry                                         	| 0.137	| 0.0526	| 0.4931	| 855   | 5129  | 0.1429	|
+| state:empty                                       	| 0.040	| 0.0420	| 0.4866	| 262   | 5780  | 0.0434	|
+| state:folded                                      	| 0.000	| 0.0000	| 0.2513	| 2     | 6040  | 0.0003	|
+| state:full/whole                                  	| 0.139	| 0.0507	| 0.5012	| 809   | 5075  | 0.1375	|
+| state:off                                         	| 0.028	| 0.1016	| 0.5429	| 128   | 5914  | 0.0212	|
+| state:on                                          	| 0.048	| 0.0507	| 0.4980	| 296   | 5746  | 0.0490	|
+| state:open                                        	| 0.020	| 0.0748	| 0.4978	| 107   | 5935  | 0.0177	|
+| state:piece/cut                                   	| 0.085	| 0.0650	| 0.4920	| 508   | 5376  | 0.0863	|
+| state:wet                                         	| 0.004	| 0.0000	| 0.4910	| 27    | 5957  | 0.0045	|
+| texture:smooth/sleek                              	| 0.431	| 0.0705	| 0.4981	| 3317  | 4409  | 0.4293	|
+| texture:soft/fluffy/flossy/furry/hairy            	| 0.205	| 0.0698	| 0.5030	| 1547  | 6179  | 0.2002	|
+| texture:tough/hard/rough                          	| 0.056	| 0.0706	| 0.4827	| 425   | 7301  | 0.0550	|
+| tone:dark/obscure                                 	| 0.245	| 0.0695	| 0.4995	| 1741  | 5455  | 0.2419	|
+| tone:light/bright/shiny                           	| 0.427	| 0.0686	| 0.5139	| 3018  | 4178  | 0.4194	|
