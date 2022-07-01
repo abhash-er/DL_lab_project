@@ -2,11 +2,16 @@
 import os
 import copy
 import math
+from tqdm import tqdm
 import logging
 import itertools
+import io
+
+import clip
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import torch
 from matplotlib.pyplot import cm
 from itertools import cycle
 from tabulate import tabulate
@@ -15,6 +20,9 @@ from sklearn.metrics import (
     precision_recall_curve,
     PrecisionRecallDisplay,
 )
+
+from PIL import Image
+from defining_attributes import get_att_hierarchy
 
 AttributeResultsMetrics = [
     "mAP",
@@ -925,6 +933,143 @@ def print_metric_table(att_evaluator, results):
     print("Per-att_group: \n" + table)
 
 
+from torch.utils.data import Dataset
+
+
+class CustomDataset(Dataset):
+    def __init__(self, json_file, transform=None):
+        self.images = json_file['images']
+        self.json_file = json_file
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.images)
+
+    def __getitem__(self, idx):
+        img_path = self.images[idx]['file_name']
+        image = Image.open(img_path)
+        # TODO change later after training
+        label = None
+        if self.transform:
+            image = self.transform(image).unsqueeze(0).to(device)
+        return image, []
+
+
+def get_template_text(class_name):
+    object_attribute_templates = {
+        "has": {
+            "none": ["{attr} {dobj} {noun}"],
+            "a": ["a {attr} {dobj} {noun}", "a {noun} has {attr} {dobj}"],
+            "the": ["the {attr} {dobj} {noun}", "the {noun} has {attr} {dobj}"],
+            "photo": [
+                "a photo of a {attr} {dobj} {noun}",
+                "a photo of an {noun} which has {attr} {dobj}",
+                "a photo of the {attr} {dobj} {noun}",
+                "a photo of the {noun} which has {attr} {dobj}",
+            ],
+        },
+        "is": {
+            "none": ["{attr} {noun}"],
+            "a": ["a {attr} {noun}", "a {noun} is {attr}"],
+            "the": ["the {attr} {noun}", "the {noun} is {attr}"],
+            "photo": [
+                "a photo of a {attr} {noun}",
+                "a photo of a {noun} which is {attr}",
+                "a photo of the {attr} {noun}",
+                "a photo of the {noun} which is {attr}",
+            ],
+        },
+    }
+    attributes_data = get_att_hierarchy()
+    templates_dict = object_attribute_templates
+    use_prompts = ["a", "the", "none", "photo"]
+    object_word = class_name
+    all_att_templates = []
+    for att_w_type in attributes_data["clsWtype"]:
+        att_type, att_list = att_w_type.split(":")
+        if att_type in attributes_data["is_has_att"]["is"]:
+            is_has = "is"
+        elif att_type in attributes_data["is_has_att"]["has"]:
+            is_has = "has"
+
+        if att_list == "young/baby":
+            att_list += "/kid/kids/child/toddler/boy/girl"
+        elif att_list == "adult/old/aged":
+            att_list += "/teen/elder"
+
+        att_templates = []
+        for syn in att_list.split("/"):
+            for prompt in use_prompts:
+                for template in templates_dict[is_has][prompt]:
+                    if is_has == "has":
+                        att_templates.append(
+                            template.format(attr=syn, dobj=att_type, noun=object_word).strip()
+                        )
+                    elif is_has == "is":
+                        att_templates.append(template.format(attr=syn, noun=object_word).strip())
+        all_att_templates.append(att_templates)
+    return all_att_templates
+
+
+def encode_text(model, text_list):
+    sentences = None
+    avg_synonyms = False
+    if isinstance(text_list[0], list):
+        # it is a list of list of strings
+        avg_synonyms = True
+        sentences = list(itertools.chain.from_iterable(text_list))
+        # print("flattened_sentences", len(sentences))
+    elif isinstance(text_list[0], str):
+        sentences = text_list
+    text = clip.tokenize(sentences).to(device)
+    with torch.no_grad():
+        if len(text) > 10000:
+            text_features = torch.cat(
+                [
+                    model.encode_text(text[: len(text) // 2]),
+                    model.encode_text(text[len(text) // 2:]),
+                ],
+                dim=0,
+            )
+        else:
+            text_features = model.encode_text(text)
+
+    if avg_synonyms:
+        synonyms_per_cat = [len(x) for x in text_list]
+        text_features = text_features.split(synonyms_per_cat, dim=0)
+        text_features = [x.mean(dim=0) for x in text_features]
+        text_features = torch.stack(text_features, dim=0)
+        # print("after stack", text_features.shape)
+
+    # print(text.shape) == (2196,77)
+    return text, text_features
+
+
+def get_zero_shot_weights(cat_classes):
+    with torch.no_grad():
+        zero_shot_weights = []
+        texts = None
+        all_att_list = None
+        for cat_class in tqdm(cat_classes):
+            att_list = get_template_text(cat_class)
+            text, class_embeddings = encode_text(model, att_list)
+            zero_shot_weights.append(class_embeddings)
+            if texts is None:
+                texts = text
+            else:
+                texts = torch.concat((texts, text))
+            if all_att_list is None:
+                all_att_list = att_list
+            else:
+                all_att_list += att_list
+            # print("Att list size", len(all_att_list))
+        zero_shot_weights = torch.stack(zero_shot_weights, dim=1).to(device)
+        dim1, dim2, dim3 = zero_shot_weights.shape
+        zero_shot_weights = zero_shot_weights.reshape(dim2, dim3, dim1)
+
+    return all_att_list, texts, zero_shot_weights
+
+
 if __name__ == "__main__":
     import json
 
@@ -968,6 +1113,7 @@ if __name__ == "__main__":
         exclude_atts=[],
     )
 
+    # TODO fill dummy values
     # Set the ground truth labels
     ground_truth_labels = []
     for ann in data_file["annotations"]:
@@ -975,13 +1121,69 @@ if __name__ == "__main__":
     ground_truth_labels = np.asarray(ground_truth_labels)
     # ignore value in evaluator is 2
     ground_truth_labels[ground_truth_labels == -1] = 2
+    print(ground_truth_labels.shape)
 
     # Set the predictions
     random_predictions = np.random.rand(len(ground_truth_labels), len(attr2idx)).astype("float")
+    # print(random_predictions.shape)
+    # TODO Start here
 
-    #TODO Predict zero shot here
-    # ....
+    # TODO loading model
+    print("Loading Model ----->")
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    model, preprocess = clip.load("ViT-B/32", device=device)
 
+    input_resolution = model.visual.input_resolution
+    context_length = model.context_length
+    vocab_size = model.vocab_size
+
+    print("Model parameters:", f"{np.sum([int(np.prod(p.shape)) for p in model.parameters()]):,}")
+    print("Input resolution:", input_resolution)
+    print("Context length:", context_length)
+    print("Vocab size:", vocab_size)
+    print()
+
+    # TODO prepare labels and prompts
+    print("Preparing labels ----->")
+    cat_classes = [cat["name"] for cat in sorted(data_file["categories"], key=lambda cat: cat["id"])]
+    # TODO get cached weights
+    print("Caching the zero shot weights")
+    out_dir = "cached weights/"
+    zero_shot_out_path = os.path.join(out_dir, "zero_shot_weights.pt")
+    texts_path = os.path.join(out_dir, "texts.pt")
+    all_att_list_path = os.path.join(out_dir, "all_att_list.npy")
+
+    if os.path.exists(all_att_list_path):
+        print("Loading from disk:")
+        zero_shot_weights = torch.load(zero_shot_out_path)
+        texts = torch.load(texts_path)
+        all_att_list = np.load(all_att_list_path, allow_pickle=True)
+    else:
+        print("Making the caches:")
+        os.mkdir(out_dir)
+        all_att_list, texts, zero_shot_weights = get_zero_shot_weights(cat_classes)
+        all_att_list = np.array(all_att_list, dtype=object)
+        print("saving to", out_dir)
+        torch.save(zero_shot_weights, zero_shot_out_path)
+        torch.save(texts, texts_path)
+        np.save(open(all_att_list_path, "wb"), all_att_list)
+
+    # TODO load images
+    from torch.utils.data import DataLoader
+
+    val_data = CustomDataset(data_file, preprocess)
+    val_dataloader = DataLoader(val_data, batch_size=1, shuffle=False)
+
+    print("\nComputing Logits")
+    for i, (images, target) in enumerate(val_dataloader):
+        images = images.to(device)
+        # target = target.to(device)
+        with torch.no_grad():
+            image_features = model.encode_image(images[0])
+            image_features /= image_features.norm(dim=-1, keepdim=True)
+            logits = image_features @ zero_shot_weights
+
+    # TODO compare logits with prediction (Evaluator part)
     # Run evaluation
     output_file_fun = os.path.join("output", "{}_random.log".format(dataset_name))
     results = evaluator.print_evaluation(
@@ -992,6 +1194,6 @@ if __name__ == "__main__":
     # Print results in table
     print_metric_table(evaluator, results)
 
-    # import ipdb;
-    #
-    # ipdb.set_trace()
+    import ipdb;
+
+    ipdb.set_trace()

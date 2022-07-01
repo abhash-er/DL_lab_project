@@ -251,11 +251,11 @@ def get_att_hierarchy():
         for w_att in list_a.split(":")[-1].split("/"):
             if w_att not in word2attId.keys():
                 word2attId[w_att] = []
-            print("w_att: ", w_att)
-            print("word2attId so far: ",word2attId)
-            print(list_a)
-            print("yk:",att_cls2Id[list_a])
-            print(attWtype)
+            # print("w_att: ", w_att)
+            # print("word2attId so far: ",word2attId)
+            # print(list_a)
+            # print("yk:",att_cls2Id[list_a])
+            # print(attWtype)
             word2attId[w_att].append(att_cls2Id[list_a])
 
     attribute_data = {
