@@ -24,6 +24,8 @@ from sklearn.metrics import (
 from PIL import Image
 from defining_attributes import get_att_hierarchy
 
+logger = logging.getLogger(__name__)
+
 AttributeResultsMetrics = [
     "mAP",
     "mA",
@@ -34,6 +36,8 @@ AttributeResultsMetrics = [
     "OV_R@",
     "OV_F1@",
 ]
+
+
 
 
 def top_K_values(array, K=5):
@@ -937,22 +941,46 @@ from torch.utils.data import Dataset
 
 
 class CustomDataset(Dataset):
-    def __init__(self, json_file, transform=None):
-        self.images = json_file['images']
+    def __init__(self, json_file, transform=None, train=False):
+        self.images_map = json_file['images']
         self.json_file = json_file
         self.transform = transform
+        self.images = []
+        self.labels = []
+        self.train = train
+        dataset = 'val300'
+        if self.train:
+            dataset = 'train300'
+        for idx in range(len(self.images_map)):
+            if self.images_map[idx]['set'] != dataset:
+                continue
+            self.fillItems(idx)
 
     def __len__(self):
         return len(self.images)
 
-    def __getitem__(self, idx):
-        img_path = self.images[idx]['file_name']
+    def fillItems(self, idx):
+        img_path = self.images_map[idx]['file_name']
+        image_id = self.images_map[idx]['id']
         image = Image.open(img_path)
-        # TODO change later after training
-        label = None
+        for annotation in self.json_file['annotations']:
+            if not self.train and annotation['area'] < 20:
+                continue
+            if annotation['image_id'] != image_id:
+                continue
+            x, y, w, h = annotation['bbox']
+            left, upper = x, y
+            right, lower = x + w, y + h
+            self.images.append(image.crop((left, upper, right, lower)))
+            label = np.asarray(annotation['att_vec'])
+            label[label == -1] = 2
+            self.labels.append(label)
+
+    def __getitem__(self, idx):
+        image = self.images[idx]
         if self.transform:
-            image = self.transform(image).unsqueeze(0).to(device)
-        return image, []
+            image = self.transform(image)
+        return image, self.labels[idx]
 
 
 def get_template_text(class_name):
@@ -1045,29 +1073,13 @@ def encode_text(model, text_list):
     return text, text_features
 
 
-def get_zero_shot_weights(cat_classes):
+def get_zero_shot_weights():
     with torch.no_grad():
-        zero_shot_weights = []
-        texts = None
-        all_att_list = None
-        for cat_class in tqdm(cat_classes):
-            att_list = get_template_text(cat_class)
-            text, class_embeddings = encode_text(model, att_list)
-            zero_shot_weights.append(class_embeddings)
-            if texts is None:
-                texts = text
-            else:
-                texts = torch.concat((texts, text))
-            if all_att_list is None:
-                all_att_list = att_list
-            else:
-                all_att_list += att_list
-            # print("Att list size", len(all_att_list))
-        zero_shot_weights = torch.stack(zero_shot_weights, dim=1).to(device)
-        dim1, dim2, dim3 = zero_shot_weights.shape
-        zero_shot_weights = zero_shot_weights.reshape(dim2, dim3, dim1)
+        att_list = get_template_text("")
+        text, text_embedding = encode_text(model, att_list)
+        zero_shot_weights = text_embedding
 
-    return all_att_list, texts, zero_shot_weights
+    return att_list, text, zero_shot_weights
 
 
 if __name__ == "__main__":
@@ -1113,7 +1125,6 @@ if __name__ == "__main__":
         exclude_atts=[],
     )
 
-    # TODO fill dummy values
     # Set the ground truth labels
     ground_truth_labels = []
     for ann in data_file["annotations"]:
@@ -1125,7 +1136,7 @@ if __name__ == "__main__":
 
     # Set the predictions
     random_predictions = np.random.rand(len(ground_truth_labels), len(attr2idx)).astype("float")
-    # print(random_predictions.shape)
+    print(random_predictions.shape)
     # TODO Start here
 
     # TODO loading model
@@ -1143,57 +1154,68 @@ if __name__ == "__main__":
     print("Vocab size:", vocab_size)
     print()
 
-    # TODO prepare labels and prompts
-    print("Preparing labels ----->")
-    cat_classes = [cat["name"] for cat in sorted(data_file["categories"], key=lambda cat: cat["id"])]
+    #  cat_classes = [cat["name"] for cat in sorted(data_file["categories"], key=lambda cat: cat["id"])]
+
     # TODO get cached weights
     print("Caching the zero shot weights")
     out_dir = "cached weights/"
     zero_shot_out_path = os.path.join(out_dir, "zero_shot_weights.pt")
     texts_path = os.path.join(out_dir, "texts.pt")
-    all_att_list_path = os.path.join(out_dir, "all_att_list.npy")
+    att_list_path = os.path.join(out_dir, "all_att_list.npy")
 
-    if os.path.exists(all_att_list_path):
+    if os.path.exists(att_list_path):
         print("Loading from disk:")
         zero_shot_weights = torch.load(zero_shot_out_path)
-        texts = torch.load(texts_path)
-        all_att_list = np.load(all_att_list_path, allow_pickle=True)
+        text = torch.load(texts_path)
+        att_list = np.load(att_list_path, allow_pickle=True)
     else:
         print("Making the caches:")
         os.mkdir(out_dir)
-        all_att_list, texts, zero_shot_weights = get_zero_shot_weights(cat_classes)
-        all_att_list = np.array(all_att_list, dtype=object)
+        att_list, text, zero_shot_weights = get_zero_shot_weights()
+        att_list = np.array(att_list, dtype=object)
         print("saving to", out_dir)
         torch.save(zero_shot_weights, zero_shot_out_path)
-        torch.save(texts, texts_path)
-        np.save(open(all_att_list_path, "wb"), all_att_list)
+        torch.save(text, texts_path)
+        np.save(open(att_list_path, "wb"), att_list)
 
     # TODO load images
     from torch.utils.data import DataLoader
 
-    val_data = CustomDataset(data_file, preprocess)
+    val_data = CustomDataset(data_file, preprocess, train=False)
     val_dataloader = DataLoader(val_data, batch_size=1, shuffle=False)
+    print(len(val_dataloader))
 
+    ground_truth = []
+    preds = []
     print("\nComputing Logits")
-    for i, (images, target) in enumerate(val_dataloader):
+    for (images, label) in tqdm(val_dataloader):
         images = images.to(device)
-        # target = target.to(device)
+        label = label.to(device)
         with torch.no_grad():
-            image_features = model.encode_image(images[0])
+            image_features = model.encode_image(images)
             image_features /= image_features.norm(dim=-1, keepdim=True)
-            logits = image_features @ zero_shot_weights
+            logits = image_features @ zero_shot_weights.T
+            logits = logits.softmax(dim=-1)
+            preds.append(logits.numpy())
+            ground_truth.append(label.numpy().astype(int))
+
+        # images = images.squeeze()
+        # # plt.imshow(images.view(images.shape[1], images.shape[2], images.shape[0]))
+        # # plt.show()
+    ground_truth = np.array(ground_truth, dtype=object).squeeze().astype(int)
+    preds = np.array(preds, dtype=object).squeeze().astype("float")
 
     # TODO compare logits with prediction (Evaluator part)
     # Run evaluation
     output_file_fun = os.path.join("output", "{}_random.log".format(dataset_name))
     results = evaluator.print_evaluation(
-        pred=random_predictions.copy(),
-        gt_label=ground_truth_labels.copy(),
+        pred=preds.copy(),
+        gt_label=ground_truth.copy(),
         output_file=output_file_fun
     )
     # Print results in table
     print_metric_table(evaluator, results)
 
-    import ipdb;
-
-    ipdb.set_trace()
+    # import ipdb;
+    #
+    # ipdb.set_trace()
