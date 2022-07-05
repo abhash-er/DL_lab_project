@@ -2,10 +2,11 @@
 import os
 import copy
 import math
-from tqdm import tqdm
+from tqdm.auto import tqdm, trange
 import logging
 import itertools
 import io
+from datetime import datetime
 
 import clip
 import numpy as np
@@ -23,6 +24,11 @@ from sklearn.metrics import (
 
 from PIL import Image
 from defining_attributes import get_att_hierarchy
+from torch.utils.data import DataLoader
+
+from torch.utils.tensorboard import SummaryWriter
+from utils import check_dir
+from utils.meters import AverageValueMeter
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +43,7 @@ AttributeResultsMetrics = [
     "OV_F1@",
 ]
 
-
+global_step = 0
 
 
 def top_K_values(array, K=5):
@@ -1039,18 +1045,9 @@ def get_template_text(class_name):
     return all_att_templates
 
 
-def encode_text(model, text_list):
-    sentences = None
-    avg_synonyms = False
-    if isinstance(text_list[0], list):
-        # it is a list of list of strings
-        avg_synonyms = True
-        sentences = list(itertools.chain.from_iterable(text_list))
-        # print("flattened_sentences", len(sentences))
-    elif isinstance(text_list[0], str):
-        sentences = text_list
-    text = clip.tokenize(sentences).to(device)
-    with torch.no_grad():
+def encode_text(model, text_list, device, train=False):
+    avg_synonyms, text = get_tokenized_text(text_list, device)
+    if train:
         if len(text) > 10000:
             text_features = torch.cat(
                 [
@@ -1061,31 +1058,179 @@ def encode_text(model, text_list):
             )
         else:
             text_features = model.encode_text(text)
+    else:
+        with torch.no_grad():
+            if len(text) > 10000:
+                text_features = torch.cat(
+                    [
+                        model.encode_text(text[: len(text) // 2]),
+                        model.encode_text(text[len(text) // 2:]),
+                    ],
+                    dim=0,
+                )
+            else:
+                text_features = model.encode_text(text)
 
     if avg_synonyms:
         synonyms_per_cat = [len(x) for x in text_list]
         text_features = text_features.split(synonyms_per_cat, dim=0)
         text_features = [x.mean(dim=0) for x in text_features]
         text_features = torch.stack(text_features, dim=0)
-        # print("after stack", text_features.shape)
 
-    # print(text.shape) == (2196,77)
     return text, text_features
 
 
-def get_zero_shot_weights():
-    with torch.no_grad():
+def get_tokenized_text(text_list, device):
+    sentences = None
+    avg_synonyms = False
+    if isinstance(text_list[0], list):
+        # it is a list of list of strings
+        avg_synonyms = True
+        sentences = list(itertools.chain.from_iterable(text_list))
+        # print("flattened_sentences", len(sentences))
+    elif isinstance(text_list[0], str):
+        sentences = text_list
+    text = clip.tokenize(sentences).to(device)
+
+    return avg_synonyms, text
+
+
+def get_zero_shot_weights(model, train=False):
+    if train:
         att_list = get_template_text("")
-        text, text_embedding = encode_text(model, att_list)
+        text, text_embedding = encode_text(model, att_list, train=train)
         zero_shot_weights = text_embedding
+    else:
+        with torch.no_grad():
+            att_list = get_template_text("")
+            text, text_embedding = encode_text(model, att_list, train=train)
+            zero_shot_weights = text_embedding
 
     return att_list, text, zero_shot_weights
+
+
+def get_cached_weights(model):
+    out_dir = "cached weights/"
+    zero_shot_out_path = os.path.join(out_dir, "zero_shot_weights.pt")
+    texts_path = os.path.join(out_dir, "texts.pt")
+    att_list_path = os.path.join(out_dir, "all_att_list.npy")
+
+    if os.path.exists(att_list_path):
+        print("Loading from disk:")
+        zero_shot_weights = torch.load(zero_shot_out_path)
+        text = torch.load(texts_path)
+        att_list = np.load(att_list_path, allow_pickle=True)
+    else:
+        print("Making the caches:")
+        os.mkdir(out_dir)
+        att_list, text, zero_shot_weights = get_zero_shot_weights(model)
+        att_list = np.array(att_list, dtype=object)
+        print("saving to", out_dir)
+        torch.save(zero_shot_weights, zero_shot_out_path)
+        torch.save(text, texts_path)
+        np.save(open(att_list_path, "wb"), att_list)
+
+    return zero_shot_weights, text, att_list
+
+
+def validate(model, preprocess, data_file, device):
+    #  cat_classes = [cat["name"] for cat in sorted(data_file["categories"], key=lambda cat: cat["id"])]
+    print("Validating")
+    # TODO get cached weights
+    zero_shot_weights, text, att_list = get_cached_weights(model)
+
+    # TODO load images
+    val_data = CustomDataset(data_file, preprocess, train=False)
+    val_dataloader = DataLoader(val_data, batch_size=1, shuffle=False)
+
+    ground_truth = []
+    preds = []
+    print("\nComputing Logits")
+    for images, label in val_dataloader:
+        images = images.to(device)
+        label = label.to(device)
+        with torch.no_grad():
+            image_features = model.encode_image(images)
+            image_features /= image_features.norm(dim=-1, keepdim=True)
+            logits = image_features @ zero_shot_weights.T
+            logits = logits.softmax(dim=-1)
+            preds.append(logits.numpy())
+            ground_truth.append(label.numpy().astype(int))
+
+        # images = images.squeeze()
+        # # plt.imshow(images.view(images.shape[1], images.shape[2], images.shape[0]))
+        # # plt.show()
+    ground_truth = np.array(ground_truth, dtype=object).squeeze().astype("int")
+    preds = np.array(preds, dtype=object).squeeze().astype("float")
+    return ground_truth, preds
+
+
+def convert_models_to_fp32(model):
+    for p in model.parameters():
+        p.data = p.data.float()
+        p.grad.data = p.grad.data.float()
+
+
+def train(model, preprocess, data_file, att_evaluator, device):
+    train_data = CustomDataset(data_file, preprocess, train=True)
+    train_dataloader = DataLoader(train_data, batch_size=10, shuffle=True)
+    timestamp = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+    log_dir = check_dir("logs/" + timestamp)
+    log = SummaryWriter(log_dir)
+
+    if device == "cpu":
+        model.float()
+    else:
+        clip.model.convert_weights(model)
+
+    loss = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=5e-5, betas=(0.9, 0.98), eps=1e-6, weight_decay=0.2)
+
+    print("info: Getting Attribute Embedding")
+    att_list = get_template_text("")
+    text, text_embedding = encode_text(model, att_list, device, train=False)
+    print("info: Start training")
+    num_epochs = 100
+    train_loss_meter = AverageValueMeter()
+    global global_step
+    for epoch in range(num_epochs):
+        print("Epoch: ", epoch)
+        for iteration, (images, labels) in enumerate(tqdm(train_dataloader, desc="Training Loop")):
+            with torch.autograd.set_detect_anomaly(True):
+                optimizer.zero_grad()
+                images = images.to(device)
+                labels = labels.to(device)
+                image_features = model.encode_image(images)
+                norm = torch.norm(image_features, dim=-1, keepdim=True).detach()
+                image_features /= norm
+                logits = image_features @ text_embedding.T
+                logits = logits.softmax(dim=-1)
+                total_loss = loss(logits.float(), labels.float())
+                total_loss.backward()
+                train_loss_meter.add(total_loss.item())
+                if device == "cpu":
+                    optimizer.step()
+                else:
+                    convert_models_to_fp32(model)
+                    optimizer.step()
+                    clip.model.convert_weights(model)
+                if iteration % 100 == 0:
+                    log.add_scalar("training_loss", train_loss_meter.mean, global_step)
+                    train_loss_meter.reset()
+                global_step += 1
+
+        if epoch % 10 == 0:
+            ground_truth, preds = validate(model, preprocess, data_file, device)
+            scores_overall, scores_per_class = att_evaluator.evaluate(preds=preds, gt_label=ground_truth)
+            print(scores_overall)
+
+    return model
 
 
 if __name__ == "__main__":
     import json
 
-    # Load the labels 
+    # Load the labels
     dataset_name = "coatt80_val1200"
     data_file = json.load(open(dataset_name + ".json", "rb"))
 
@@ -1132,87 +1277,27 @@ if __name__ == "__main__":
     ground_truth_labels = np.asarray(ground_truth_labels)
     # ignore value in evaluator is 2
     ground_truth_labels[ground_truth_labels == -1] = 2
-    print(ground_truth_labels.shape)
+    # print(ground_truth_labels.shape)
 
     # Set the predictions
     random_predictions = np.random.rand(len(ground_truth_labels), len(attr2idx)).astype("float")
-    print(random_predictions.shape)
     # TODO Start here
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
 
-    # TODO loading model
-    print("Loading Model ----->")
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    model, preprocess = clip.load("ViT-B/32", device=device)
+    model = train(model, preprocess, data_file, AttEvaluator, device)
 
-    input_resolution = model.visual.input_resolution
-    context_length = model.context_length
-    vocab_size = model.vocab_size
-
-    print("Model parameters:", f"{np.sum([int(np.prod(p.shape)) for p in model.parameters()]):,}")
-    print("Input resolution:", input_resolution)
-    print("Context length:", context_length)
-    print("Vocab size:", vocab_size)
-    print()
-
-    #  cat_classes = [cat["name"] for cat in sorted(data_file["categories"], key=lambda cat: cat["id"])]
-
-    # TODO get cached weights
-    print("Caching the zero shot weights")
-    out_dir = "cached weights/"
-    zero_shot_out_path = os.path.join(out_dir, "zero_shot_weights.pt")
-    texts_path = os.path.join(out_dir, "texts.pt")
-    att_list_path = os.path.join(out_dir, "all_att_list.npy")
-
-    if os.path.exists(att_list_path):
-        print("Loading from disk:")
-        zero_shot_weights = torch.load(zero_shot_out_path)
-        text = torch.load(texts_path)
-        att_list = np.load(att_list_path, allow_pickle=True)
-    else:
-        print("Making the caches:")
-        os.mkdir(out_dir)
-        att_list, text, zero_shot_weights = get_zero_shot_weights()
-        att_list = np.array(att_list, dtype=object)
-        print("saving to", out_dir)
-        torch.save(zero_shot_weights, zero_shot_out_path)
-        torch.save(text, texts_path)
-        np.save(open(att_list_path, "wb"), att_list)
-
-    # TODO load images
-    from torch.utils.data import DataLoader
-
-    val_data = CustomDataset(data_file, preprocess, train=False)
-    val_dataloader = DataLoader(val_data, batch_size=1, shuffle=False)
-    print(len(val_dataloader))
-
-    ground_truth = []
-    preds = []
-    print("\nComputing Logits")
-    for (images, label) in tqdm(val_dataloader):
-        images = images.to(device)
-        label = label.to(device)
-        with torch.no_grad():
-            image_features = model.encode_image(images)
-            image_features /= image_features.norm(dim=-1, keepdim=True)
-            logits = image_features @ zero_shot_weights.T
-            logits = logits.softmax(dim=-1)
-            preds.append(logits.numpy())
-            ground_truth.append(label.numpy().astype(int))
-
-        # images = images.squeeze()
-        # # plt.imshow(images.view(images.shape[1], images.shape[2], images.shape[0]))
-        # # plt.show()
-    ground_truth = np.array(ground_truth, dtype=object).squeeze().astype(int)
-    preds = np.array(preds, dtype=object).squeeze().astype("float")
-
+    ground_truth, preds = validate(model, preprocess, data_file, device=device)
     # TODO compare logits with prediction (Evaluator part)
     # Run evaluation
     output_file_fun = os.path.join("output", "{}_random.log".format(dataset_name))
     results = evaluator.print_evaluation(
         pred=preds.copy(),
         gt_label=ground_truth.copy(),
-        output_file=output_file_fun
+        output_file=output_file_fun,
     )
+
+    # training part
     # Print results in table
     print_metric_table(evaluator, results)
 
