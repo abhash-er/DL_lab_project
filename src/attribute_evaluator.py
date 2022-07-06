@@ -1095,21 +1095,21 @@ def get_tokenized_text(text_list, device):
     return avg_synonyms, text
 
 
-def get_zero_shot_weights(model, train=False):
+def get_zero_shot_weights(model, device, train=False):
     if train:
         att_list = get_template_text("")
-        text, text_embedding = encode_text(model, att_list, train=train)
+        text, text_embedding = encode_text(model, att_list, train=train, device=device)
         zero_shot_weights = text_embedding
     else:
         with torch.no_grad():
             att_list = get_template_text("")
-            text, text_embedding = encode_text(model, att_list, train=train)
+            text, text_embedding = encode_text(model, att_list, train=train, device=device)
             zero_shot_weights = text_embedding
 
     return att_list, text, zero_shot_weights
 
 
-def get_cached_weights(model):
+def get_cached_weights(model, device):
     out_dir = "cached weights/"
     zero_shot_out_path = os.path.join(out_dir, "zero_shot_weights.pt")
     texts_path = os.path.join(out_dir, "texts.pt")
@@ -1122,8 +1122,8 @@ def get_cached_weights(model):
         att_list = np.load(att_list_path, allow_pickle=True)
     else:
         print("Making the caches:")
-        os.mkdir(out_dir)
-        att_list, text, zero_shot_weights = get_zero_shot_weights(model)
+        check_dir(out_dir)
+        att_list, text, zero_shot_weights = get_zero_shot_weights(model, device=device)
         att_list = np.array(att_list, dtype=object)
         print("saving to", out_dir)
         torch.save(zero_shot_weights, zero_shot_out_path)
@@ -1137,7 +1137,7 @@ def validate(model, preprocess, data_file, device):
     #  cat_classes = [cat["name"] for cat in sorted(data_file["categories"], key=lambda cat: cat["id"])]
     print("Validating")
     # TODO get cached weights
-    zero_shot_weights, text, att_list = get_cached_weights(model)
+    zero_shot_weights, text, att_list = get_cached_weights(model, device)
 
     # TODO load images
     val_data = CustomDataset(data_file, preprocess, train=False)
@@ -1174,6 +1174,8 @@ def convert_models_to_fp32(model):
 def train(model, preprocess, data_file, att_evaluator, device):
     train_data = CustomDataset(data_file, preprocess, train=True)
     train_dataloader = DataLoader(train_data, batch_size=10, shuffle=True)
+
+    # tensorboard logging
     timestamp = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
     log_dir = check_dir("logs/" + timestamp)
     log = SummaryWriter(log_dir)
@@ -1190,7 +1192,7 @@ def train(model, preprocess, data_file, att_evaluator, device):
     att_list = get_template_text("")
     text, text_embedding = encode_text(model, att_list, device, train=False)
     print("info: Start training")
-    num_epochs = 100
+    num_epochs = 20
     train_loss_meter = AverageValueMeter()
     global global_step
     for epoch in range(num_epochs):
@@ -1221,9 +1223,12 @@ def train(model, preprocess, data_file, att_evaluator, device):
 
         if epoch % 10 == 0:
             ground_truth, preds = validate(model, preprocess, data_file, device)
-            scores_overall, scores_per_class = att_evaluator.evaluate(preds=preds, gt_label=ground_truth)
+            scores_overall, scores_per_class = att_evaluator.evaluate(pred=preds.copy(), gt_label=ground_truth.copy())
+            # TODO log the validation and
+            print(scores_per_class)
             print(scores_overall)
 
+    # model save
     return model
 
 
@@ -1257,6 +1262,11 @@ if __name__ == "__main__":
     attr_parent_type = {key: list(val) for key, val in attr_parent_type.items()}
     attribute_head_tail = {key: list(val) for key, val in attribute_head_tail.items()}
 
+    timestamp = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+    out_dir = check_dir("output/" + timestamp)
+    run = 0
+    output_file = os.path.join(out_dir, "{}_{}.log".format(dataset_name, run))
+
     # Build evaluator
     evaluator = AttEvaluator(
         attr2idx,
@@ -1268,6 +1278,7 @@ if __name__ == "__main__":
         threshold=0.5,
         top_k=8,
         exclude_atts=[],
+        output_file=output_file
     )
 
     # Set the ground truth labels
@@ -1282,19 +1293,25 @@ if __name__ == "__main__":
     # Set the predictions
     random_predictions = np.random.rand(len(ground_truth_labels), len(attr2idx)).astype("float")
     # TODO Start here
+    # model load (check if present or not)
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
     model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
 
-    model = train(model, preprocess, data_file, AttEvaluator, device)
+    # model = train(model, preprocess, data_file, evaluator, device)
 
     ground_truth, preds = validate(model, preprocess, data_file, device=device)
+    scores_overall, scores_per_class = evaluator.evaluate(pred=preds.copy(), gt_label=ground_truth.copy())
+    # TODO log the validation and
+    print(scores_per_class)
+    print()
+    print(scores_overall)
+
     # TODO compare logits with prediction (Evaluator part)
     # Run evaluation
     output_file_fun = os.path.join("output", "{}_random.log".format(dataset_name))
     results = evaluator.print_evaluation(
         pred=preds.copy(),
         gt_label=ground_truth.copy(),
-        output_file=output_file_fun,
     )
 
     # training part
