@@ -1162,6 +1162,9 @@ def validate(model, preprocess, data_file, device):
         # # plt.show()
     ground_truth = np.array(ground_truth, dtype=object).squeeze().astype("int")
     preds = np.array(preds, dtype=object).squeeze().astype("float")
+    print(ground_truth)
+    print()
+    print(preds)
     return ground_truth, preds
 
 
@@ -1171,7 +1174,7 @@ def convert_models_to_fp32(model):
         p.grad.data = p.grad.data.float()
 
 
-def train(model, preprocess, data_file, att_evaluator, device):
+def train(model, preprocess, data_file, att_evaluator, device, output_folder, epoch_load=0):
     train_data = CustomDataset(data_file, preprocess, train=True)
     train_dataloader = DataLoader(train_data, batch_size=10, shuffle=True)
 
@@ -1188,14 +1191,27 @@ def train(model, preprocess, data_file, att_evaluator, device):
     loss = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=5e-5, betas=(0.9, 0.98), eps=1e-6, weight_decay=0.2)
 
+    # TODO load saved model
+    continue_training = False
+    results_dir = check_dir("results/models")
+    if len(os.listdir(results_dir)) != 0:
+        checkpoint_path = os.path.join(results_dir, "epoch{}.pth".format(epoch_load))
+        checkpoint = torch.load("results/mode")
+        model.load_state_dict(checkpoint['model_state_dict'])
+        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        epoch = checkpoint['epoch']
+        loss = checkpoint['loss']
+        continue_training = True
+
     print("info: Getting Attribute Embedding")
     att_list = get_template_text("")
     text, text_embedding = encode_text(model, att_list, device, train=False)
     print("info: Start training")
-    num_epochs = 20
+    start_epoch = epoch_load
+    end_epoch = 20
     train_loss_meter = AverageValueMeter()
     global global_step
-    for epoch in range(num_epochs):
+    for epoch in range(start_epoch, end_epoch):
         print("Epoch: ", epoch)
         for iteration, (images, labels) in enumerate(tqdm(train_dataloader, desc="Training Loop")):
             with torch.autograd.set_detect_anomaly(True):
@@ -1224,11 +1240,26 @@ def train(model, preprocess, data_file, att_evaluator, device):
         if epoch % 10 == 0:
             ground_truth, preds = validate(model, preprocess, data_file, device)
             scores_overall, scores_per_class = att_evaluator.evaluate(pred=preds.copy(), gt_label=ground_truth.copy())
-            # TODO log the validation and
-            print(scores_per_class)
-            print(scores_overall)
+            val_output_folder = check_dir(output_folder + "/epoch{}".format(epoch))
+            val_output_path = os.path.join(val_output_folder, "epoch{}".format(epoch))
+            att_evaluator.print_evaluation(
+                pred=preds.copy(),
+                gt_label=ground_truth.copy(),
+                output_file=val_output_path,
+            )
+            with torch.no_grad():
+                validation_loss = loss(torch.from_numpy(preds).float(), torch.from_numpy(ground_truth).float())
+                log.add_scalar("Validation Loss vs epochs", validation_loss.item(), epoch)
 
-    # model save
+        # TODO save the model
+        if epoch % 5 == 0:
+            torch.save({
+                'epoch': epoch,
+                'model_state_dict': model.state_dict(),
+                'optimizer_state_dict': optimizer.state_dict(),
+                'loss': loss,
+            }, os.path.join(results_dir, "epoch{}.pth".format(epoch))
+            )
     return model
 
 
@@ -1288,27 +1319,24 @@ if __name__ == "__main__":
     ground_truth_labels = np.asarray(ground_truth_labels)
     # ignore value in evaluator is 2
     ground_truth_labels[ground_truth_labels == -1] = 2
-    # print(ground_truth_labels.shape)
 
     # Set the predictions
     random_predictions = np.random.rand(len(ground_truth_labels), len(attr2idx)).astype("float")
+
     # TODO Start here
     # model load (check if present or not)
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
     model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
 
-    # model = train(model, preprocess, data_file, evaluator, device)
+    # Training
+    model = train(model, preprocess, data_file, evaluator, device, epoch_load=0, output_folder=out_dir)
 
+    # Validation
     ground_truth, preds = validate(model, preprocess, data_file, device=device)
     scores_overall, scores_per_class = evaluator.evaluate(pred=preds.copy(), gt_label=ground_truth.copy())
-    # TODO log the validation and
-    print(scores_per_class)
-    print()
-    print(scores_overall)
 
     # TODO compare logits with prediction (Evaluator part)
     # Run evaluation
-    output_file_fun = os.path.join("output", "{}_random.log".format(dataset_name))
     results = evaluator.print_evaluation(
         pred=preds.copy(),
         gt_label=ground_truth.copy(),
@@ -1318,6 +1346,6 @@ if __name__ == "__main__":
     # Print results in table
     print_metric_table(evaluator, results)
 
-    # import ipdb;
-    #
-    # ipdb.set_trace()
+    import ipdb;
+
+    ipdb.set_trace()
