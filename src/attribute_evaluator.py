@@ -1077,6 +1077,8 @@ def encode_text(model, text_list, device, train=False):
         text_features = [x.mean(dim=0) for x in text_features]
         text_features = torch.stack(text_features, dim=0)
 
+    norm_text_feature = text_features.norm(dim=-1, keepdim=True).detach()
+    text_features /= norm_text_feature
     return text, text_features
 
 
@@ -1162,9 +1164,6 @@ def validate(model, preprocess, data_file, device):
         # # plt.show()
     ground_truth = np.array(ground_truth, dtype=object).squeeze().astype("int")
     preds = np.array(preds, dtype=object).squeeze().astype("float")
-    print(ground_truth)
-    print()
-    print(preds)
     return ground_truth, preds
 
 
@@ -1174,7 +1173,7 @@ def convert_models_to_fp32(model):
         p.grad.data = p.grad.data.float()
 
 
-def train(model, preprocess, data_file, att_evaluator, device, output_folder, epoch_load=0):
+def train(model, preprocess, data_file, att_evaluator, device, output_folder, epoch_load=0, isModelSave=False):
     train_data = CustomDataset(data_file, preprocess, train=True)
     train_dataloader = DataLoader(train_data, batch_size=10, shuffle=True)
 
@@ -1194,9 +1193,10 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
     # TODO load saved model
     continue_training = False
     results_dir = check_dir("results/models")
-    if len(os.listdir(results_dir)) != 0:
+    if len(os.listdir(results_dir)) != 1:
+        # ignore DS store
         checkpoint_path = os.path.join(results_dir, "epoch{}.pth".format(epoch_load))
-        checkpoint = torch.load("results/mode")
+        checkpoint = torch.load(checkpoint_path)
         model.load_state_dict(checkpoint['model_state_dict'])
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         epoch = checkpoint['epoch']
@@ -1207,7 +1207,7 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
     att_list = get_template_text("")
     text, text_embedding = encode_text(model, att_list, device, train=False)
     print("info: Start training")
-    start_epoch = epoch_load
+    start_epoch = epoch_load + 1 if continue_training else 0
     end_epoch = 20
     train_loss_meter = AverageValueMeter()
     global global_step
@@ -1232,12 +1232,12 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
                     convert_models_to_fp32(model)
                     optimizer.step()
                     clip.model.convert_weights(model)
-                if iteration % 100 == 0:
+                if iteration % 20 == 0:
                     log.add_scalar("training_loss", train_loss_meter.mean, global_step)
                     train_loss_meter.reset()
                 global_step += 1
 
-        if epoch % 10 == 0:
+        if epoch % 2 == 0:
             ground_truth, preds = validate(model, preprocess, data_file, device)
             scores_overall, scores_per_class = att_evaluator.evaluate(pred=preds.copy(), gt_label=ground_truth.copy())
             val_output_folder = check_dir(output_folder + "/epoch{}".format(epoch))
@@ -1252,7 +1252,7 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
                 log.add_scalar("Validation Loss vs epochs", validation_loss.item(), epoch)
 
         # TODO save the model
-        if epoch % 5 == 0:
+        if epoch % 5 == 0 and isModelSave:
             torch.save({
                 'epoch': epoch,
                 'model_state_dict': model.state_dict(),
@@ -1329,7 +1329,8 @@ if __name__ == "__main__":
     model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
 
     # Training
-    model = train(model, preprocess, data_file, evaluator, device, epoch_load=0, output_folder=out_dir)
+    model = train(model, preprocess, data_file, evaluator, device, epoch_load=0, output_folder=out_dir,
+                  isModelSave=True)
 
     # Validation
     ground_truth, preds = validate(model, preprocess, data_file, device=device)
