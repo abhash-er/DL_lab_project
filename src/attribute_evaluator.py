@@ -2,10 +2,8 @@
 import os
 import copy
 import math
-from tqdm.auto import tqdm, trange
 import logging
 import itertools
-import io
 from datetime import datetime
 
 import clip
@@ -14,7 +12,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import torch
 from matplotlib.pyplot import cm
-from itertools import cycle
 from tabulate import tabulate
 from sklearn.metrics import (
     average_precision_score,
@@ -22,13 +19,8 @@ from sklearn.metrics import (
     PrecisionRecallDisplay,
 )
 
-from PIL import Image
 from defining_attributes import get_att_hierarchy
-from torch.utils.data import DataLoader
-
-from torch.utils.tensorboard import SummaryWriter
 from utils import check_dir
-from utils.meters import AverageValueMeter
 
 logger = logging.getLogger(__name__)
 
@@ -943,52 +935,6 @@ def print_metric_table(att_evaluator, results):
     print("Per-att_group: \n" + table)
 
 
-from torch.utils.data import Dataset
-
-
-class CustomDataset(Dataset):
-    def __init__(self, json_file, transform=None, train=False):
-        self.images_map = json_file['images']
-        self.json_file = json_file
-        self.transform = transform
-        self.images = []
-        self.labels = []
-        self.train = train
-        dataset = 'val300'
-        if self.train:
-            dataset = 'train300'
-        for idx in range(len(self.images_map)):
-            if self.images_map[idx]['set'] != dataset:
-                continue
-            self.fillItems(idx)
-
-    def __len__(self):
-        return len(self.images)
-
-    def fillItems(self, idx):
-        img_path = self.images_map[idx]['file_name']
-        image_id = self.images_map[idx]['id']
-        image = Image.open(img_path)
-        for annotation in self.json_file['annotations']:
-            if not self.train and annotation['area'] < 20:
-                continue
-            if annotation['image_id'] != image_id:
-                continue
-            x, y, w, h = annotation['bbox']
-            left, upper = x, y
-            right, lower = x + w, y + h
-            self.images.append(image.crop((left, upper, right, lower)))
-            label = np.asarray(annotation['att_vec'])
-            label[label == -1] = 2
-            self.labels.append(label)
-
-    def __getitem__(self, idx):
-        image = self.images[idx]
-        if self.transform:
-            image = self.transform(image)
-        return image, self.labels[idx]
-
-
 def get_template_text(class_name):
     object_attribute_templates = {
         "has": {
@@ -1118,149 +1064,21 @@ def get_cached_weights(model, device):
     att_list_path = os.path.join(out_dir, "all_att_list.npy")
 
     if os.path.exists(att_list_path):
-        print("Loading from disk:")
+        print("---> Loading from disk!")
         zero_shot_weights = torch.load(zero_shot_out_path)
         text = torch.load(texts_path)
         att_list = np.load(att_list_path, allow_pickle=True)
     else:
-        print("Making the caches:")
+        print("---> Making the caches!")
         check_dir(out_dir)
         att_list, text, zero_shot_weights = get_zero_shot_weights(model, device=device)
         att_list = np.array(att_list, dtype=object)
-        print("saving to", out_dir)
+        print("---> saving to ", out_dir)
         torch.save(zero_shot_weights, zero_shot_out_path)
         torch.save(text, texts_path)
         np.save(open(att_list_path, "wb"), att_list)
 
     return zero_shot_weights, text, att_list
-
-
-def validate(model, preprocess, data_file, device):
-    #  cat_classes = [cat["name"] for cat in sorted(data_file["categories"], key=lambda cat: cat["id"])]
-    print("Validating")
-    # TODO get cached weights
-    zero_shot_weights, text, att_list = get_cached_weights(model, device)
-
-    # TODO load images
-    val_data = CustomDataset(data_file, preprocess, train=False)
-    val_dataloader = DataLoader(val_data, batch_size=1, shuffle=False)
-
-    ground_truth = []
-    preds = []
-    print("\nComputing Logits")
-    for images, label in val_dataloader:
-        images = images.to(device)
-        label = label.to(device)
-        with torch.no_grad():
-            image_features = model.encode_image(images)
-            image_features /= image_features.norm(dim=-1, keepdim=True)
-            logits = image_features @ zero_shot_weights.T
-            logits = logits.softmax(dim=-1)
-            preds.append(logits.numpy())
-            ground_truth.append(label.numpy().astype(int))
-
-        # images = images.squeeze()
-        # # plt.imshow(images.view(images.shape[1], images.shape[2], images.shape[0]))
-        # # plt.show()
-    ground_truth = np.array(ground_truth, dtype=object).squeeze().astype("int")
-    preds = np.array(preds, dtype=object).squeeze().astype("float")
-    return ground_truth, preds
-
-
-def convert_models_to_fp32(model):
-    for p in model.parameters():
-        p.data = p.data.float()
-        p.grad.data = p.grad.data.float()
-
-
-def train(model, preprocess, data_file, att_evaluator, device, output_folder, epoch_load=0, isModelSave=False):
-    train_data = CustomDataset(data_file, preprocess, train=True)
-    train_dataloader = DataLoader(train_data, batch_size=10, shuffle=True)
-
-    # tensorboard logging
-    timestamp = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
-    log_dir = check_dir("logs/" + timestamp)
-    log = SummaryWriter(log_dir)
-
-    if device == "cpu":
-        model.float()
-    else:
-        clip.model.convert_weights(model)
-
-    loss = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=5e-5, betas=(0.9, 0.98), eps=1e-6, weight_decay=0.2)
-
-    # TODO load saved model
-    continue_training = False
-    results_dir = check_dir("results/models")
-    if len(os.listdir(results_dir)) != 1:
-        # ignore DS store
-        checkpoint_path = os.path.join(results_dir, "epoch{}.pth".format(epoch_load))
-        checkpoint = torch.load(checkpoint_path)
-        model.load_state_dict(checkpoint['model_state_dict'])
-        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-        epoch = checkpoint['epoch']
-        loss = checkpoint['loss']
-        continue_training = True
-
-    print("info: Getting Attribute Embedding")
-    att_list = get_template_text("")
-    text, text_embedding = encode_text(model, att_list, device, train=False)
-    print("info: Start training")
-    start_epoch = epoch_load + 1 if continue_training else 0
-    end_epoch = 20
-    train_loss_meter = AverageValueMeter()
-    global global_step
-    for epoch in range(start_epoch, end_epoch):
-        print("Epoch: ", epoch)
-        for iteration, (images, labels) in enumerate(tqdm(train_dataloader, desc="Training Loop")):
-            with torch.autograd.set_detect_anomaly(True):
-                optimizer.zero_grad()
-                images = images.to(device)
-                labels = labels.to(device)
-                image_features = model.encode_image(images)
-                norm = torch.norm(image_features, dim=-1, keepdim=True).detach()
-                image_features /= norm
-                logits = image_features @ text_embedding.T
-                logits = logits.softmax(dim=-1)
-                total_loss = loss(logits.float(), labels.float())
-                total_loss.backward()
-                train_loss_meter.add(total_loss.item())
-                if device == "cpu":
-                    optimizer.step()
-                else:
-                    convert_models_to_fp32(model)
-                    optimizer.step()
-                    clip.model.convert_weights(model)
-                if iteration % 20 == 0:
-                    log.add_scalar("training_loss", train_loss_meter.mean, global_step)
-                    train_loss_meter.reset()
-                global_step += 1
-
-        if epoch % 2 == 0:
-            ground_truth, preds = validate(model, preprocess, data_file, device)
-            scores_overall, scores_per_class = att_evaluator.evaluate(pred=preds.copy(), gt_label=ground_truth.copy())
-            val_output_folder = check_dir(output_folder + "/epoch{}".format(epoch))
-            val_output_path = os.path.join(val_output_folder, "epoch{}".format(epoch))
-            att_evaluator.print_evaluation(
-                pred=preds.copy(),
-                gt_label=ground_truth.copy(),
-                output_file=val_output_path,
-            )
-            with torch.no_grad():
-                validation_loss = loss(torch.from_numpy(preds).float(), torch.from_numpy(ground_truth).float())
-                log.add_scalar("Validation Loss vs epochs", validation_loss.item(), epoch)
-
-        # TODO save the model
-        if epoch % 5 == 0 and isModelSave:
-            torch.save({
-                'epoch': epoch,
-                'model_state_dict': model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'loss': loss,
-            }, os.path.join(results_dir, "epoch{}.pth".format(epoch))
-            )
-    return model
 
 
 if __name__ == "__main__":
@@ -1323,30 +1141,13 @@ if __name__ == "__main__":
     # Set the predictions
     random_predictions = np.random.rand(len(ground_truth_labels), len(attr2idx)).astype("float")
 
-    # TODO Start here
-    # model load (check if present or not)
-    device = "cuda:0" if torch.cuda.is_available() else "cpu"
-    model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
-
-    # Training
-    model = train(model, preprocess, data_file, evaluator, device, epoch_load=0, output_folder=out_dir,
-                  isModelSave=True)
-
-    # Validation
-    ground_truth, preds = validate(model, preprocess, data_file, device=device)
-    scores_overall, scores_per_class = evaluator.evaluate(pred=preds.copy(), gt_label=ground_truth.copy())
-
     # TODO compare logits with prediction (Evaluator part)
     # Run evaluation
     results = evaluator.print_evaluation(
-        pred=preds.copy(),
-        gt_label=ground_truth.copy(),
+        pred=random_predictions.copy(),
+        gt_label=ground_truth_labels.copy(),
     )
 
-    # training part
-    # Print results in table
     print_metric_table(evaluator, results)
-
-    import ipdb;
-
-    ipdb.set_trace()
+    # import ipdb;
+    # ipdb.set_trace()
