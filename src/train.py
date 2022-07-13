@@ -37,14 +37,15 @@ def validate(model, preprocess, data_file, device):
         with torch.no_grad():
             image_features = model.encode_image(images)
             image_features /= image_features.norm(dim=-1, keepdim=True)
-            logits = image_features @ zero_shot_weights.T
+            logit_scale = model.logit_scale.exp()
+            logits = logit_scale * image_features @ zero_shot_weights.T
             logits = logits.sigmoid()
             preds.append(logits.numpy())
             ground_truth.append(label.numpy().astype(int))
 
         # images = images.squeeze()
-        # # plt.imshow(images.view(images.shape[1], images.shape[2], images.shape[0]))
-        # # plt.show()
+        # plt.imshow(images.view(images.shape[1], images.shape[2], images.shape[0]))
+        # plt.show()
     ground_truth = np.array(ground_truth, dtype=object).squeeze().astype("int")
     preds = np.array(preds, dtype=object).squeeze().astype("float")
     return ground_truth, preds
@@ -60,7 +61,6 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
     # Load the Training Data
     train_data = CustomDataset(data_file, preprocess, train=True)
     train_dataloader = DataLoader(train_data, batch_size=16, shuffle=True)
-
     # Tensorboard logging
     timestamp = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
     log_dir = check_dir("logs/" + timestamp)
@@ -103,8 +103,8 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
     for epoch in range(start_epoch, end_epoch):
         print("Epoch: ", epoch)
         for iteration, (images, labels) in enumerate(tqdm(train_dataloader, desc="Training Loop")):
-            print(images.shape)
-            a, b, c, d = images.shape
+            # print(images.shape)
+            # a, b, c, d = images.shape
             # plt.imshow(images.view(a, c, d, b)[0])
             images = images.to(device)
             labels = labels.to(device)
@@ -112,10 +112,11 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
             optimizer.zero_grad()
 
             image_features = model.encode_image(images).to(device)
-            # norm = torch.norm(image_features, dim=-1, keepdim=True).detach()
-            # image_features /= norm
+            norm = torch.norm(image_features, dim=1, keepdim=True).detach()
+            image_features /= norm
 
-            logits = image_features @ text_embedding.T
+            logit_scale = model.logit_scale.exp()
+            logits = logit_scale * image_features @ text_embedding.T
             logits = logits.sigmoid().float()
             labels = labels.float()
 

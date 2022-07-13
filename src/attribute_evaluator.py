@@ -1023,8 +1023,8 @@ def encode_text(model, text_list, device, train=False):
         text_features = [x.mean(dim=0) for x in text_features]
         text_features = torch.stack(text_features, dim=0)
 
-    # norm_text_feature = text_features.norm(dim=-1, keepdim=True).detach()
-    # text_features /= norm_text_feature
+    norm_text_feature = text_features.norm(dim=1, keepdim=True).detach()
+    text_features /= norm_text_feature
     return text, text_features
 
 

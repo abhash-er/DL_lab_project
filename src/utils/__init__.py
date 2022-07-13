@@ -1,13 +1,14 @@
 import os
 import numpy as np
 from PIL import Image
+from matplotlib import pyplot as plt
 from torch.utils.data import Dataset
-
 
 
 def check_dir(path):
     os.makedirs(path, exist_ok=True)
     return path
+
 
 class CustomDataset(Dataset):
     def __init__(self, json_file, transform=None, train=False):
@@ -33,7 +34,7 @@ class CustomDataset(Dataset):
         image_id = self.images_map[idx]['id']
         image = Image.open(img_path)
         for annotation in self.json_file['annotations']:
-            if not self.train and annotation['area'] < 20:
+            if annotation['area'] < 400:
                 continue
             if annotation['image_id'] != image_id:
                 continue
@@ -44,10 +45,13 @@ class CustomDataset(Dataset):
             label = np.asarray(annotation['att_vec'])
             label[label == -1] = 2
             self.labels.append(label)
+            # self.categories.append(self.json_file['categories'][annotation['category_id']])
 
     def __getitem__(self, idx):
         image = self.images[idx]
+        # plt.imshow(image)
+        # plt.show()
+        # print(self.categories[idx])
         if self.transform:
             image = self.transform(image)
         return image, self.labels[idx]
-
