@@ -30,6 +30,7 @@ def validate(model, preprocess, data_file, device):
 
     ground_truth = []
     preds = []
+    model.eval()
     print("Info: Computing Logits")
     for images, label in val_dataloader:
         images = images.to(device)
@@ -40,8 +41,8 @@ def validate(model, preprocess, data_file, device):
             logit_scale = model.logit_scale.exp()
             logits = logit_scale * image_features @ zero_shot_weights.T
             logits = logits.sigmoid()
-            preds.append(logits.numpy())
-            ground_truth.append(label.numpy().astype(int))
+            preds.append(logits.cpu().numpy())
+            ground_truth.append(label.cpu().numpy().astype(int))
 
         # images = images.squeeze()
         # plt.imshow(images.view(images.shape[1], images.shape[2], images.shape[0]))
@@ -54,7 +55,8 @@ def validate(model, preprocess, data_file, device):
 def convert_models_to_fp32(model):
     for p in model.parameters():
         p.data = p.data.float()
-        p.grad.data = p.grad.data.float()
+        if p.grad is not None:
+            p.grad.data = p.grad.data.float()
 
 
 def train(model, preprocess, data_file, att_evaluator, device, output_folder, epoch_load=0, isModelSave=False):
@@ -74,7 +76,7 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
 
     # Initialize optimizer and Optimizer
     loss = torch.nn.BCELoss()
-    optimizer = torch.optim.Adam(model.visual.parameters(), lr=1e-4, betas=(0.9, 0.98), eps=1e-6, weight_decay=0.2)
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-4, betas=(0.9, 0.98), eps=1e-6, weight_decay=0.2)
 
     # Load Saved Model
     continue_training = False
@@ -91,8 +93,7 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
         continue_training = True
 
     print("Info: Getting Attribute Embedding")
-    att_list = get_template_text("")
-    text, text_embedding = encode_text(model, att_list, device, train=False)
+    text_embedding, text, att_list = get_cached_weights(model, device)
 
     print("Info: Training...")
     start_epoch = epoch + 1 if continue_training else 0
@@ -103,9 +104,7 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
     for epoch in range(start_epoch, end_epoch):
         print("Epoch: ", epoch)
         for iteration, (images, labels) in enumerate(tqdm(train_dataloader, desc="Training Loop")):
-            # print(images.shape)
-            # a, b, c, d = images.shape
-            # plt.imshow(images.view(a, c, d, b)[0])
+            model.train()
             images = images.to(device)
             labels = labels.to(device)
 
@@ -120,8 +119,8 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
             logits = logits.sigmoid().float()
             labels = labels.float()
 
-            scores_overall, scores_per_class = att_evaluator.evaluate(pred=logits.detach().numpy().copy(),
-                                                                      gt_label=labels.detach().numpy().copy())
+            scores_overall, scores_per_class = att_evaluator.evaluate(pred=logits.cpu().detach().numpy().copy(),
+                                                                      gt_label=labels.cpu().detach().numpy().copy())
             map_meter.add(scores_per_class['all']['ap'])
 
             logits = logits.flatten()
@@ -130,8 +129,9 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
             if mask.sum() != 0:
                 logits = logits[mask]
                 labels = labels[mask]
-            print("Logits: ", logits)
-            print("Labels: ", labels)
+
+            # print("Logits: ", logits)
+            # print("Labels: ", labels)
 
             total_loss = loss(logits, labels)
             print("Loss: ", total_loss.item())
@@ -145,6 +145,8 @@ def train(model, preprocess, data_file, att_evaluator, device, output_folder, ep
                 convert_models_to_fp32(model)
                 optimizer.step()
                 clip.model.convert_weights(model)
+
+            model.logit_scale.data = torch.clamp(model.logit_scale.data, 0, 4.6052)
 
             if iteration % 40 == 0:
                 log.add_scalar("training_loss", train_loss_meter.mean, global_step)
