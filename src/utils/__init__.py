@@ -3,6 +3,14 @@ import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
 from torch.utils.data import Dataset
+from torchvision.transforms import Compose, Resize, CenterCrop, ToTensor, Normalize
+
+try:
+    from torchvision.transforms import InterpolationMode
+
+    BICUBIC = InterpolationMode.BICUBIC
+except ImportError:
+    BICUBIC = Image.BICUBIC
 
 
 def check_dir(path):
@@ -10,11 +18,26 @@ def check_dir(path):
     return path
 
 
+def _convert_image_to_rgb(image):
+    return image.convert("RGB")
+
+
 class CustomDataset(Dataset):
     def __init__(self, json_file, transform=None, train=False):
         self.images_map = json_file['images']
         self.json_file = json_file
-        self.transform = transform
+
+        if transform is not None:
+            self.transform = transform
+        else:
+            self.transform = Compose([
+                Resize((224, 224), interpolation=BICUBIC),
+                # CenterCrop(224),
+                _convert_image_to_rgb,
+                ToTensor(),
+                Normalize((0.48145466, 0.4578275, 0.40821073), (0.26862954, 0.26130258, 0.27577711)),
+            ])
+
         self.images = []
         self.labels = []
         self.train = train
@@ -52,6 +75,7 @@ class CustomDataset(Dataset):
         # plt.imshow(image)
         # plt.show()
         # print(self.categories[idx])
-        if self.transform:
-            image = self.transform(image)
+        image = self.transform(image)
+        # plt.imshow(image.permute((1, 2, 0)))
+        # plt.show()
         return image, self.labels[idx]

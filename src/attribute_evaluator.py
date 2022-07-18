@@ -1064,7 +1064,7 @@ def get_cached_weights(model, device):
     att_list_path = os.path.join(out_dir, "all_att_list.npy")
 
     if os.path.exists(att_list_path):
-        print("---> Loading from disk!")
+        # print("---> Loading from disk!")
         zero_shot_weights = torch.load(zero_shot_out_path)
         text = torch.load(texts_path)
         att_list = np.load(att_list_path, allow_pickle=True)
