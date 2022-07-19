@@ -3,7 +3,6 @@ import torch
 import os
 import clip
 import numpy as np
-from sklearn.metrics import average_precision_score
 from tqdm.auto import tqdm
 import json
 
@@ -368,6 +367,7 @@ class ResNet50Embedding(nn.Module):
 
         # zs_weight = torch.tensor(np.load(path_att_emb), dtype=torch.float32)
         zs_weight = torch.load(path_att_emb)
+        # already normalized
         zs_weight = F.normalize(zs_weight, p=2, dim=1)
         self.num_attributes, self.zs_weight_dim = zs_weight.shape
 

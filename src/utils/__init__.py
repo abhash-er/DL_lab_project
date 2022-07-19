@@ -31,7 +31,8 @@ class CustomDataset(Dataset):
             self.transform = transform
         else:
             self.transform = Compose([
-                Resize(size=(320, 320), interpolation=2),
+                Resize(size=(320, 320), interpolation=BICUBIC),
+                _convert_image_to_rgb,
                 # transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.1),
                 RandomHorizontalFlip(),
                 ToTensor(),
