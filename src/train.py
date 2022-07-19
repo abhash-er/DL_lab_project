@@ -13,11 +13,22 @@ from torch.utils.data import DataLoader
 from datetime import datetime
 from torch.utils.tensorboard import SummaryWriter
 from attribute_evaluator import get_cached_weights, AttEvaluator, print_metric_table
-# from sklearn.metrics import average_precision_score
-# from torchviz import make_dot
-from torchvision.models.resnet import resnet18
+import torchvision.models
+from torch import nn
 
 global_step = 0
+
+import sys, os
+
+
+# Disable
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
+
+
+# Restore
+def enablePrint():
+    sys.stdout = sys.__stdout__
 
 
 def validate(model, device, val_dataloader):
@@ -49,14 +60,8 @@ def validate(model, device, val_dataloader):
 
 
 def validate_resnet(model, device, val_dataloader):
-    #  cat_classes = [cat["name"] for cat in sorted(data_file["categories"], key=lambda cat: cat["id"])]
     print("Info: Validating...")
-    # Run make_caches beforehand
-    out_dir = "cached weights/"
-    zero_shot_out_path = os.path.join(out_dir, "zero_shot_weights.pt")
-    zero_shot_weights = torch.load(zero_shot_out_path)
 
-    # load images
     ground_truth = []
     preds = []
     model.eval()
@@ -65,9 +70,7 @@ def validate_resnet(model, device, val_dataloader):
         images = images.to(device)
         label = label.to(device)
         with torch.no_grad():
-            image_features = model(images).squeeze()
-            image_features /= image_features.norm(dim=-1, keepdim=True)
-            logits = image_features @ zero_shot_weights.T
+            logits = model(images)
             logits = logits.sigmoid()
             preds.append(logits.cpu().numpy())
             ground_truth.append(label.cpu().numpy().astype(int))
@@ -233,12 +236,13 @@ def train_resnet(model, data_file, att_evaluator, device, output_folder, epoch_l
 
     # Initialize optimizer and Optimizer
     loss = torch.nn.BCELoss()
-    optimizer = torch.optim.AdamW(lr=1e-5, params=model.parameters())
+    optimizer = torch.optim.AdamW(lr=3e-3, weight_decay=1e-5, params=model.parameters())
 
     # Load Saved Model
     continue_training = False
     results_dir = check_dir("results/re_models")
     epoch = 0
+
     if len(os.listdir(results_dir)) > 1 and isModelSave:
         # ignore DS store
         checkpoint_path = os.path.join(results_dir, "epoch{}.pth".format(epoch_load))
@@ -251,9 +255,6 @@ def train_resnet(model, data_file, att_evaluator, device, output_folder, epoch_l
 
     print("Info: Getting Attribute Embedding")
     # Run make_caches beforehand
-    out_dir = "cached weights/"
-    zero_shot_out_path = os.path.join(out_dir, "zero_shot_weights.pt")
-    text_embedding = torch.load(zero_shot_out_path)
 
     print("Info: Training...")
     start_epoch = epoch + 1 if continue_training else 0
@@ -264,25 +265,22 @@ def train_resnet(model, data_file, att_evaluator, device, output_folder, epoch_l
     global global_step
     for epoch in range(start_epoch, end_epoch):
         print("Epoch: ", epoch)
-        for iteration, (images, labels) in enumerate(tqdm(train_dataloader, desc="Training Loop")):
+        for iteration, (images, labels) in enumerate(tqdm(train_dataloader)):
             model.train()
             images = images.to(device)
             labels = labels.to(device)
 
             optimizer.zero_grad()
 
-            image_features = model(images).squeeze()
-            norm = torch.norm(image_features, dim=1, keepdim=True).detach()
-            image_features /= norm
-
-            logits = image_features @ text_embedding.T
+            logits = model(images)
             logits = logits.sigmoid().float()
             labels = labels.float()
 
-            # scores_overall, scores_per_class = att_evaluator.evaluate(pred=logits.cpu().detach().numpy().copy(),
-            #                                                           gt_label=labels.cpu().detach().numpy().copy())
-            #
-            # map_meter.add(scores_per_class['all']['ap'])
+            blockPrint()
+            results = att_evaluator.print_evaluation(pred=logits.cpu().detach().numpy().copy(),
+                                                     gt_label=labels.cpu().detach().numpy().copy())
+            map_meter.add(results['PC_t0.5/all/ap'])
+            enablePrint()
 
             logits = logits.flatten()
             labels = labels.flatten()
@@ -291,15 +289,7 @@ def train_resnet(model, data_file, att_evaluator, device, output_folder, epoch_l
                 logits = logits[mask]
                 labels = labels[mask]
 
-            # print("Logits: ", logits)
-            # print("Labels: ", labels)
-
-            map_train_score = average_precision_score(labels.cpu().detach().numpy().copy(),
-                                                      logits.cpu().detach().numpy().copy())
-
-            map_meter.add(map_train_score)
             total_loss = loss(logits, labels)
-            # make_dot(total_loss).render("clip_torchviz", format="png")
             total_loss.backward()
 
             train_loss_meter.add(total_loss.item())
@@ -307,14 +297,16 @@ def train_resnet(model, data_file, att_evaluator, device, output_folder, epoch_l
 
             if iteration % 100 == 0:
                 log.add_scalar("training_loss", train_loss_meter.mean, global_step)
-                log.add_scalar("Mean Average Precision", map_meter.mean, global_step)
+                log.add_scalar("Training mAP", map_meter.mean, global_step)
                 train_loss_meter.reset()
                 map_meter.reset()
 
                 ground_truth, preds = validate_resnet(model, device, val_dataloader)
-                scores_overall, scores_per_class = att_evaluator.evaluate(pred=preds.copy(),
-                                                                          gt_label=ground_truth.copy())
-                # print("Map Validation: ", scores_per_class['all']['ap'])
+                blockPrint()
+                results = att_evaluator.print_evaluation(pred=preds.copy(),
+                                                         gt_label=ground_truth.copy())
+                enablePrint()
+
                 with torch.no_grad():
                     preds = preds.flatten()
                     ground_truth = ground_truth.flatten()
@@ -322,11 +314,10 @@ def train_resnet(model, data_file, att_evaluator, device, output_folder, epoch_l
                     if mask.sum() != 0:
                         preds = preds[mask]
                         ground_truth = ground_truth[mask]
-                    map_val_score = average_precision_score(ground_truth.copy(), preds.copy())
-                    print("Map Validation: ", map_val_score)
+
                     validation_loss = loss(torch.from_numpy(preds).float(), torch.from_numpy(ground_truth).float())
                     log.add_scalar("Validation Loss", validation_loss.item(), global_step)
-                    log.add_scalar("Validation mAP", map_val_score, global_step)
+                    log.add_scalar("Validation mAP", results['PC_t0.5/all/ap'], global_step)
 
             global_step += 1
 
@@ -340,6 +331,59 @@ def train_resnet(model, data_file, att_evaluator, device, output_folder, epoch_l
             }, os.path.join(results_dir, "epoch{}.pth".format(epoch))
             )
     return model
+
+
+import torch.nn.functional as F
+
+
+class ClipModel(nn.Module):
+    def __init__(self, backbone_type, path_att_emb):
+        super().__init__()
+        # device=torch.device("cpu") is important to load weights in float32
+        backbone, _ = clip.load(backbone_type, jit=False, device=torch.device("cpu"))
+        self.backbone = backbone.visual
+
+        zs_weight = torch.tensor(np.load(path_att_emb), dtype=torch.float32)
+        zs_weight = F.normalize(zs_weight, p=2, dim=1)
+        self.num_attributes, self.zs_weight_dim = zs_weight.shape
+
+        self.fc = nn.Linear(512, self.zs_weight_dim)
+        nn.init.xavier_uniform_(self.fc.weight)
+
+        self.attribute_head = nn.Linear(self.zs_weight_dim, self.num_attributes)
+        self.attribute_head.weight.data = zs_weight
+        self.attribute_head.bias.data = torch.zeros_like(self.attribute_head.bias.data)
+        self.attribute_head.weight.requires_grad = False
+        self.attribute_head.bias.requires_grad = False
+
+    def forward(self, x):
+        x = self.backbone(x)
+        x = self.fc(x)
+
+
+class ResNet50Embedding(nn.Module):
+    def __init__(self, pretrained, path_att_emb):
+        super().__init__()
+        self.backbone = torchvision.models.resnet50(pretrained=pretrained)
+
+        # zs_weight = torch.tensor(np.load(path_att_emb), dtype=torch.float32)
+        zs_weight = torch.load(path_att_emb)
+        zs_weight = F.normalize(zs_weight, p=2, dim=1)
+        self.num_attributes, self.zs_weight_dim = zs_weight.shape
+
+        self.backbone.fc = nn.Linear(2048, self.zs_weight_dim)
+        nn.init.xavier_uniform_(self.backbone.fc.weight)
+
+        self.attribute_head = nn.Linear(self.zs_weight_dim, self.num_attributes)
+        self.attribute_head.weight.data = zs_weight
+        self.attribute_head.bias.data = torch.zeros_like(self.attribute_head.bias.data)
+        self.attribute_head.weight.requires_grad = False
+        self.attribute_head.bias.requires_grad = False
+
+    def forward(self, x):
+        x = self.backbone(x)
+        x = self.attribute_head(x)
+        return x
 
 
 if __name__ == "__main__":
@@ -392,18 +436,13 @@ if __name__ == "__main__":
 
     # load model
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
-    # model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
-
     val_data = CustomDataset(data_file, transform=None, train=False)
     val_dataloader = DataLoader(val_data, batch_size=1, shuffle=False)
 
-    # Train Model
-    # model = train(model, preprocess, data_file, evaluator, device, epoch_load=0, output_folder=out_dir,
-    #               isModelSave=False)
+    out_dir = "cached weights/"
+    zero_shot_out_path = os.path.join(out_dir, "zero_shot_weights.pt")
+    model = ResNet50Embedding(pretrained=True, path_att_emb=zero_shot_out_path)
 
-    resnet18 = resnet18(pretrained=True)
-    model = torch.nn.Sequential(*(list(resnet18.children())[:-1]))
-    model = model.to(device)
     model = train_resnet(model, data_file=data_file, att_evaluator=evaluator, device=device,
                          output_folder=out_dir,
                          isModelSave=False)
