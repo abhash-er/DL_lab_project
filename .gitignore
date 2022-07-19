@@ -1,0 +1,12 @@
+/src/datasets
+/.DS_Store
+/src/.DS_Store
+/src/__pycache__
+/src/cached weights
+/src/logs
+/src/output
+/src/utils/meters/__pycache__
+/src/utils/__pycache__
+captions_val2017.json
+instances_val2017.json
+person_keypoints_val2017.json
