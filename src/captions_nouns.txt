@@ -1,0 +1,34 @@
+{
+    "NOUN": [
+        "baker",
+        "kitchen",
+        "pans",
+        "front",
+        "pots",
+        "pizzas",
+        "man",
+        "pies",
+        "wall",
+        "rolling",
+        "person",
+        "table",
+        "stove",
+        "dough"
+    ],
+    "LEMMA": [
+        "baker",
+        "pot",
+        "kitchen",
+        "front",
+        "pan",
+        "pie",
+        "man",
+        "wall",
+        "pizza",
+        "rolling",
+        "person",
+        "table",
+        "stove",
+        "dough"
+    ]
+}

@@ -1,0 +1,19 @@
+{'supercategory': 'kitchen', 'id': 44, 'name': 'bottle'}
+{'supercategory': 'furniture', 'id': 67, 'name': 'dining table'}
+{'supercategory': 'person', 'id': 1, 'name': 'person'}
+{'supercategory': 'kitchen', 'id': 49, 'name': 'knife'}
+{'supercategory': 'kitchen', 'id': 51, 'name': 'bowl'}
+{'supercategory': 'kitchen', 'id': 51, 'name': 'bowl'}
+{'supercategory': 'appliance', 'id': 79, 'name': 'oven'}
+{'supercategory': 'person', 'id': 1, 'name': 'person'}
+{'supercategory': 'kitchen', 'id': 47, 'name': 'cup'}
+{'supercategory': 'kitchen', 'id': 47, 'name': 'cup'}
+{'supercategory': 'kitchen', 'id': 51, 'name': 'bowl'}
+{'supercategory': 'kitchen', 'id': 51, 'name': 'bowl'}
+{'supercategory': 'food', 'id': 56, 'name': 'broccoli'}
+{'supercategory': 'kitchen', 'id': 50, 'name': 'spoon'}
+{'supercategory': 'food', 'id': 56, 'name': 'broccoli'}
+{'supercategory': 'food', 'id': 56, 'name': 'broccoli'}
+{'supercategory': 'appliance', 'id': 79, 'name': 'oven'}
+{'supercategory': 'food', 'id': 57, 'name': 'carrot'}
+{'supercategory': 'appliance', 'id': 81, 'name': 'sink'}
