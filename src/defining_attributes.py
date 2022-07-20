@@ -153,7 +153,8 @@ animal_categories = {
 }
 
 human_categories = {
-    "maturity": animal_categories["maturity"],  # ["baby/kid/child/boy/girl", "teen/adult/elder"],
+    # ["baby/kid/child/boy/girl", "teen/adult/elder"],
+    "maturity": animal_categories["maturity"],
     "gender": ["male/man/guy/boy", "female/woman/girl"],
     "hair length": general_categories["length"] + ["bald"],
     "hair color": general_categories["color"],
@@ -229,7 +230,8 @@ def get_att_hierarchy():
     for obj_type, att_categories in attribute_hierarchy.items():
         for type_a, list_a in att_categories.items():
             if type_a == "material":
-                list_a = ["/".join(extended_materials[material]) for material in list_a]
+                list_a = ["/".join(extended_materials[material])
+                          for material in list_a]
             attributes += list_a
             attWtype += [type_a + ":" + att for att in list_a]
             for att in list_a:
@@ -251,11 +253,11 @@ def get_att_hierarchy():
         for w_att in list_a.split(":")[-1].split("/"):
             if w_att not in word2attId.keys():
                 word2attId[w_att] = []
-            print("w_att: ", w_att)
-            print("word2attId so far: ",word2attId)
-            print(list_a)
-            print("yk:",att_cls2Id[list_a])
-            print(attWtype)
+            # print("w_att: ", w_att)
+            # print("word2attId so far: ",word2attId)
+            # print(list_a)
+            # print("yk:",att_cls2Id[list_a])
+            # print(attWtype)
             word2attId[w_att].append(att_cls2Id[list_a])
 
     attribute_data = {
@@ -270,5 +272,6 @@ def get_att_hierarchy():
         "extended_materials": extended_materials,
     }
     return attribute_data
+
 
 get_att_hierarchy()

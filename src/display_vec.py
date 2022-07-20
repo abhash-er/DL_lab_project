@@ -1,4 +1,5 @@
 from defining_attributes import get_att_hierarchy
+import json
 
 hier = get_att_hierarchy()
 
@@ -17,6 +18,8 @@ def show_print():
     print(len(hier["clsWtype"]))
     print(hier["clsWtype"][:5])
     print()
+    # with open("clsWtype.json", "w") as write_file:
+    #     json.dump(hier["clsWtype"], write_file)
 
     print("cls2Id")
     print("===========")
