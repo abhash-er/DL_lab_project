@@ -11,13 +11,16 @@ class ClipModel(nn.Module):
         # device=torch.device("cpu") is important to load weights in float32
         backbone, _ = clip.load(backbone_type, jit=False, device=torch.device("cpu"))
         self.backbone = backbone.visual
+        self.transform = _
 
         zs_weight = torch.load(path_att_emb)
         zs_weight = F.normalize(zs_weight, p=2, dim=1)
         self.num_attributes, self.zs_weight_dim = zs_weight.shape
 
-        self.fc = nn.Linear(512, self.zs_weight_dim)
-        nn.init.xavier_uniform_(self.fc.weight)
+        if "RN" in backbone_type:
+            self.fc = nn.Linear(1024, self.zs_weight_dim)
+        else:
+            self.fc = nn.Linear(512, self.zs_weight_dim)
 
         self.attribute_head = nn.Linear(self.zs_weight_dim, self.num_attributes)
         self.attribute_head.weight.data = zs_weight.float()
@@ -28,6 +31,8 @@ class ClipModel(nn.Module):
     def forward(self, x):
         x = self.backbone(x)
         x = self.fc(x)
+        x = self.attribute_head(x)
+        return x
 
 
 class ResNet50Embedding(nn.Module):

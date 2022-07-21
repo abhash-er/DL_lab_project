@@ -32,7 +32,7 @@ def enablePrint():
 def get_arguments():
     parser = argparse.ArgumentParser(description="Multi-label-Classification")
     parser.add_argument("--lr", type=float, default=3e-3, help="learning rate")
-    parser.add_argument("--eta-min", type=float, default=1e-5, help="minimum learning rate for the scheduler")
+    parser.add_argument("--eta-min", type=float, default=3e-5, help="minimum learning rate for the scheduler")
     parser.add_argument("--weight-decay", type=float, default=1e-5, help="optimizer: weight decay")
     parser.add_argument("--num-workers", type=int, default=4, help="number of workers")
     parser.add_argument("--batch-size", type=int, default=16, help="minibatch size of labeled training set")
@@ -133,7 +133,9 @@ def validate(model, device, val_dataloader, log, best_val_map, results_dir):
             'loss': loss,
         }, os.path.join(results_dir, "model_best.pth")
         )
-        print("Saving the best Model at epoch {} with mAP {}".format(epoch, best_val_map))
+        print("Saving the best Model at epoch {} with mAP {}, and mAP head {}, mAP medium {} and mAP tail {}".format(
+            epoch, best_val_map, results['PC_t0.5/head/ap'],
+            results['PC_t0.5/medium/ap'], results['PC_t0.5/tail/ap']))
 
     return best_val_map
 

@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
 from torch.utils.data import Dataset
-from torchvision.transforms import Compose, Resize, CenterCrop, ToTensor, Normalize
+from torchvision.transforms import Compose, Resize, CenterCrop, ToTensor, Normalize, ColorJitter, RandomHorizontalFlip
 
 try:
     from torchvision.transforms import InterpolationMode
@@ -32,7 +32,9 @@ class CustomDataset(Dataset):
         else:
             self.transform = Compose([
                 Resize((224, 224), interpolation=BICUBIC),
+                ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.1),
                 # CenterCrop(224),
+                RandomHorizontalFlip(),
                 _convert_image_to_rgb,
                 ToTensor(),
                 Normalize((0.48145466, 0.4578275, 0.40821073), (0.26862954, 0.26130258, 0.27577711)),
