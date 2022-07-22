@@ -1,0 +1,2592 @@
+[
+    {
+        "word": "room",
+        "score": 15.493596942193921,
+        "from": "ol,w2v,wiki,swiki,wn"
+    },
+    {
+        "word": "restaurant",
+        "score": 11.419698618659394,
+        "from": "cn5,ol,w2v,wiki"
+    },
+    {
+        "word": "stove",
+        "score": 11.31473976901507,
+        "from": "cn5,ol,w2v,wiki"
+    },
+    {
+        "word": "cooking",
+        "score": 8.04331474123276,
+        "from": "ol,w2v,wiki"
+    },
+    {
+        "word": "dishwasher",
+        "score": 7.9490495674692605,
+        "from": "cn5,ol,w2v,wiki"
+    },
+    {
+        "word": "refrigerator",
+        "score": 7.823165988490987,
+        "from": "ol,w2v,wiki"
+    },
+    {
+        "word": "microwave oven",
+        "score": 7.543991046985539,
+        "from": "cn5,ol,wiki"
+    },
+    {
+        "word": "cafeteria",
+        "score": 7.467158004021405,
+        "from": "ol,w2v,wiki"
+    },
+    {
+        "word": "galley",
+        "score": 7.273230769230769,
+        "from": "ol,wiki,wn,wn"
+    },
+    {
+        "word": "pantry",
+        "score": 5.682846840697487,
+        "from": "cn5,ol,w2v,wiki"
+    },
+    {
+        "word": "laundry",
+        "score": 4.600274842415278,
+        "from": "ol,w2v,wiki"
+    },
+    {
+        "word": "kitchenette",
+        "score": 4.527651546484533,
+        "from": "cn5,ol,wn"
+    },
+    {
+        "word": "cookhouse",
+        "score": 4.071225915479097,
+        "from": "cn5,ol,wn"
+    },
+    {
+        "word": "fireplace",
+        "score": 4.064195237643315,
+        "from": "ol,w2v,wiki"
+    },
+    {
+        "word": "hotel",
+        "from": "wiki,swiki",
+        "score": 3.9188177339901475
+    },
+    {
+        "word": "wood",
+        "score": 3.8132570345688053,
+        "from": "w2v,wiki"
+    },
+    {
+        "word": "downstairs",
+        "score": 3.64717441240082,
+        "from": "cn5,ol,w2v"
+    },
+    {
+        "word": "bathroom",
+        "score": 3.327421901485412,
+        "from": "ol,w2v,wiki"
+    },
+    {
+        "word": "basement",
+        "score": 3.0258523387483915,
+        "from": "ol,w2v,wiki"
+    },
+    {
+        "word": "dining",
+        "score": 2.6257124798359825,
+        "from": "w2v,wiki"
+    },
+    {
+        "word": "cabinet",
+        "score": 2.5068372478421472,
+        "from": "cn5,wiki"
+    },
+    {
+        "word": "oven",
+        "score": 2.4430095428679466,
+        "from": "cn5,ol,wiki"
+    },
+    {
+        "word": "dining room",
+        "score": 2.4162088669950736,
+        "from": "ol,wiki"
+    },
+    {
+        "word": "chef",
+        "score": 2.367528342417422,
+        "from": "cn5,ol,swiki"
+    },
+    {
+        "word": "food preparation",
+        "score": 2.233784137358384,
+        "from": "cn5,wiki"
+    },
+    {
+        "word": "kitchen utensil",
+        "score": 2.103771746757275,
+        "from": "cn5,wiki"
+    },
+    {
+        "word": "sink",
+        "from": "wiki",
+        "score": 1.8727093596059114
+    },
+    {
+        "word": "dishwashing",
+        "score": 1.8372932171276997,
+        "from": "ol,wiki"
+    },
+    {
+        "word": "kitchenware",
+        "score": 1.8349866215079462,
+        "from": "cn5,wiki"
+    },
+    {
+        "word": "house",
+        "score": 1.7496241758241755,
+        "from": "ol,swiki"
+    },
+    {
+        "word": "hospital",
+        "from": "wiki",
+        "score": 1.7190147783251233
+    },
+    {
+        "word": "hearth",
+        "score": 1.6022255399772642,
+        "from": "ol,wiki"
+    },
+    {
+        "word": "bronze",
+        "from": "wiki",
+        "score": 1.6007881773399018
+    },
+    {
+        "word": "cupboard",
+        "score": 1.5912893436760362,
+        "from": "cn5,wiki"
+    },
+    {
+        "word": "kitchen stove",
+        "from": "wiki",
+        "score": 1.5845320197044332
+    },
+    {
+        "word": "slavery",
+        "from": "wiki",
+        "score": 1.5534975369458126
+    },
+    {
+        "word": "upstairs",
+        "score": 1.5193081143002423,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "apartment",
+        "score": 1.5132602370651198,
+        "from": "w2v,wiki"
+    },
+    {
+        "word": "bedroom",
+        "score": 1.494695852782598,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "patio",
+        "score": 1.4256251693423907,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "closet",
+        "score": 1.4193064787151508,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "cabinets",
+        "score": 1.4132121792443835,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "public health",
+        "from": "wiki",
+        "score": 1.4071921182266007
+    },
+    {
+        "word": "dishpan",
+        "score": 1.4065545372872075,
+        "from": "cn5,ol"
+    },
+    {
+        "word": "garage",
+        "score": 1.4041457861735844,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "dishes",
+        "score": 1.4010032544975184,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "tub",
+        "score": 1.384037031396155,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "cupboards",
+        "score": 1.366712117143513,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "decor",
+        "score": 1.3637008473338665,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "fridge",
+        "score": 1.3597078516235714,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "grill",
+        "score": 1.3579215381015688,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "freezer",
+        "score": 1.3467808388588518,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "cooker",
+        "score": 1.2632309371027026,
+        "from": "cn5,ol"
+    },
+    {
+        "word": "coffeemaker",
+        "score": 1.2515307417900536,
+        "from": "cn5,ol"
+    },
+    {
+        "word": "steak",
+        "score": 1.1426824953446675,
+        "from": "cn5,wiki"
+    },
+    {
+        "word": "cooktop",
+        "score": 1.0820911308861219,
+        "from": "cn5,ol"
+    },
+    {
+        "word": "cookstove",
+        "score": 1.0715382456826208,
+        "from": "cn5,ol"
+    },
+    {
+        "word": "extractor hood",
+        "score": 1.0668627984512187,
+        "from": "cn5,wiki"
+    },
+    {
+        "word": "frankfurt kitchen",
+        "from": "wiki",
+        "score": 0.9248275862068962
+    },
+    {
+        "word": "cook",
+        "from": "wiki,swiki",
+        "score": 0.7566502463054186
+    },
+    {
+        "word": "entertaining",
+        "from": "wiki",
+        "score": 0.7408866995073891
+    },
+    {
+        "word": "countertop",
+        "score": 0.7366615384615385,
+        "from": "ol,wiki"
+    },
+    {
+        "word": "home",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "abode",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "habitation",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "dwelling",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "caboose",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "domicile",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "fire",
+        "from": "wiki",
+        "score": 0.6965517241379311
+    },
+    {
+        "word": "atrium",
+        "from": "wiki",
+        "score": 0.6866995073891626
+    },
+    {
+        "word": "wok",
+        "score": 0.6784248628765763,
+        "from": "cn5"
+    },
+    {
+        "word": "villa",
+        "from": "wiki",
+        "score": 0.657142857142857
+    },
+    {
+        "word": "smoke",
+        "from": "wiki",
+        "score": 0.6522167487684729
+    },
+    {
+        "word": "benjamin thompson",
+        "from": "wiki",
+        "score": 0.6505418719211824
+    },
+    {
+        "word": "cuisine",
+        "score": 0.6400924040951588,
+        "from": "cn5"
+    },
+    {
+        "word": "saucepan",
+        "score": 0.6397434549521679,
+        "from": "cn5"
+    },
+    {
+        "word": "chimney",
+        "from": "wiki",
+        "score": 0.6374384236453201
+    },
+    {
+        "word": "kitchenless",
+        "score": 0.6353682572985365,
+        "from": "cn5"
+    },
+    {
+        "word": "kitchener",
+        "score": 0.6347839618951281,
+        "from": "cn5"
+    },
+    {
+        "word": "longhouse",
+        "from": "wiki",
+        "score": 0.632512315270936
+    },
+    {
+        "word": "kitchenry",
+        "score": 0.6317752982478232,
+        "from": "cn5"
+    },
+    {
+        "word": "iroquois",
+        "from": "wiki",
+        "score": 0.6275862068965516
+    },
+    {
+        "word": "japan",
+        "from": "wiki",
+        "score": 0.6128078817733991
+    },
+    {
+        "word": "charcoal",
+        "from": "wiki",
+        "score": 0.5980295566502463
+    },
+    {
+        "word": "rice",
+        "from": "wiki",
+        "score": 0.5881773399014778
+    },
+    {
+        "word": "shop",
+        "score": 0.5847480776111889,
+        "from": "w2v"
+    },
+    {
+        "word": "castle",
+        "from": "wiki",
+        "score": 0.5783251231527093
+    },
+    {
+        "word": "monastery",
+        "from": "wiki",
+        "score": 0.5733990147783252
+    },
+    {
+        "word": "teakettle",
+        "score": 0.5730428968950929,
+        "from": "cn5"
+    },
+    {
+        "word": "utensil",
+        "score": 0.5716560070959296,
+        "from": "cn5"
+    },
+    {
+        "word": "casserole",
+        "score": 0.5709779103080392,
+        "from": "cn5"
+    },
+    {
+        "word": "staircase",
+        "from": "wiki",
+        "score": 0.5684729064039409
+    },
+    {
+        "word": "scotland",
+        "from": "wiki",
+        "score": 0.5586206896551724
+    },
+    {
+        "word": "kitchens",
+        "score": 0.5581586815172533,
+        "from": "w2v"
+    },
+    {
+        "word": "cleaning",
+        "score": 0.5553851802698094,
+        "from": "w2v"
+    },
+    {
+        "word": "iron",
+        "from": "wiki",
+        "score": 0.5536945812807881
+    },
+    {
+        "word": "furniture",
+        "score": 0.5514519241303338,
+        "from": "w2v"
+    },
+    {
+        "word": "copper",
+        "from": "wiki",
+        "score": 0.5438423645320196
+    },
+    {
+        "word": "bed",
+        "score": 0.5410596299386358,
+        "from": "w2v"
+    },
+    {
+        "word": "pottery",
+        "from": "wiki",
+        "score": 0.5389162561576355
+    },
+    {
+        "word": "decorating",
+        "score": 0.5389065465275984,
+        "from": "w2v"
+    },
+    {
+        "word": "trivet",
+        "from": "wiki",
+        "score": 0.5339901477832512
+    },
+    {
+        "word": "dressing",
+        "score": 0.5329225592670156,
+        "from": "w2v"
+    },
+    {
+        "word": "pan",
+        "score": 0.5270426559372636,
+        "from": "cn5"
+    },
+    {
+        "word": "toilet",
+        "score": 0.5269518293432204,
+        "from": "w2v"
+    },
+    {
+        "word": "filling",
+        "score": 0.5211873819918452,
+        "from": "w2v"
+    },
+    {
+        "word": "filled",
+        "score": 0.5202193133285615,
+        "from": "w2v"
+    },
+    {
+        "word": "utensils",
+        "score": 0.5152256585587153,
+        "from": "w2v"
+    },
+    {
+        "word": "plastic",
+        "score": 0.5147188885614143,
+        "from": "w2v"
+    },
+    {
+        "word": "food",
+        "from": "swiki",
+        "score": 0.5142857142857142
+    },
+    {
+        "word": "servant",
+        "from": "wiki",
+        "score": 0.5142857142857142
+    },
+    {
+        "word": "rooms",
+        "score": 0.5138761917493458,
+        "from": "w2v"
+    },
+    {
+        "word": "glass",
+        "score": 0.5134531882965878,
+        "from": "w2v"
+    },
+    {
+        "word": "clothes",
+        "score": 0.5076993890983882,
+        "from": "w2v"
+    },
+    {
+        "word": "farmhouse",
+        "from": "wiki",
+        "score": 0.5044334975369458
+    },
+    {
+        "word": "housewares",
+        "score": 0.4981511536468836,
+        "from": "cn5"
+    },
+    {
+        "word": "couch",
+        "score": 0.49777576573119203,
+        "from": "w2v"
+    },
+    {
+        "word": "sleeping",
+        "score": 0.4943566987773524,
+        "from": "w2v"
+    },
+    {
+        "word": "door",
+        "score": 0.49317106434158514,
+        "from": "w2v"
+    },
+    {
+        "word": "store",
+        "score": 0.491888728003077,
+        "from": "w2v"
+    },
+    {
+        "word": "bag",
+        "score": 0.491280757723711,
+        "from": "w2v"
+    },
+    {
+        "word": "washing",
+        "score": 0.4911965348333133,
+        "from": "w2v"
+    },
+    {
+        "word": "soup",
+        "score": 0.4894367940750923,
+        "from": "w2v"
+    },
+    {
+        "word": "floor",
+        "score": 0.4877607604997133,
+        "from": "w2v"
+    },
+    {
+        "word": "shops",
+        "score": 0.485233779489595,
+        "from": "w2v"
+    },
+    {
+        "word": "dish",
+        "score": 0.48495489401121755,
+        "from": "cn5"
+    },
+    {
+        "word": "parlor",
+        "from": "wiki",
+        "score": 0.4847290640394089
+    },
+    {
+        "word": "taylorism",
+        "from": "wiki",
+        "score": 0.48403940886699504
+    },
+    {
+        "word": "kettle",
+        "score": 0.4835615973483353,
+        "from": "cn5"
+    },
+    {
+        "word": "floors",
+        "score": 0.4831183593313196,
+        "from": "w2v"
+    },
+    {
+        "word": "cottage",
+        "score": 0.4828811811252362,
+        "from": "w2v"
+    },
+    {
+        "word": "bedrooms",
+        "score": 0.4823133890789922,
+        "from": "w2v"
+    },
+    {
+        "word": "bathrooms",
+        "score": 0.4803562142492867,
+        "from": "w2v"
+    },
+    {
+        "word": "hall",
+        "from": "wiki",
+        "score": 0.47980295566502457
+    },
+    {
+        "word": "barbecue",
+        "score": 0.4792176581812337,
+        "from": "w2v"
+    },
+    {
+        "word": "sitting",
+        "score": 0.4789722890080935,
+        "from": "w2v"
+    },
+    {
+        "word": "window",
+        "score": 0.4785043667511498,
+        "from": "w2v"
+    },
+    {
+        "word": "tables",
+        "score": 0.4780352713432101,
+        "from": "w2v"
+    },
+    {
+        "word": "fashioned",
+        "score": 0.47789330409095493,
+        "from": "w2v"
+    },
+    {
+        "word": "cake",
+        "score": 0.47714594401852667,
+        "from": "w2v"
+    },
+    {
+        "word": "garden",
+        "score": 0.4767085545330924,
+        "from": "w2v"
+    },
+    {
+        "word": "microwave",
+        "score": 0.47571432203915914,
+        "from": "cn5"
+    },
+    {
+        "word": "closets",
+        "score": 0.47547473951825686,
+        "from": "w2v"
+    },
+    {
+        "word": "fancy",
+        "score": 0.4750873581084063,
+        "from": "w2v"
+    },
+    {
+        "word": "chairs",
+        "score": 0.4742082726313787,
+        "from": "w2v"
+    },
+    {
+        "word": "cauldron",
+        "score": 0.4726067853752239,
+        "from": "cn5"
+    },
+    {
+        "word": "lunch",
+        "score": 0.47258467270597326,
+        "from": "w2v"
+    },
+    {
+        "word": "pizza",
+        "score": 0.47093658896987994,
+        "from": "w2v"
+    },
+    {
+        "word": "empty",
+        "score": 0.47012395038249644,
+        "from": "w2v"
+    },
+    {
+        "word": "bread",
+        "score": 0.4700713340676342,
+        "from": "w2v"
+    },
+    {
+        "word": "pastry",
+        "score": 0.46970724554141347,
+        "from": "w2v"
+    },
+    {
+        "word": "mattresses",
+        "score": 0.4695934205188421,
+        "from": "w2v"
+    },
+    {
+        "word": "cooks",
+        "score": 0.46945392743641784,
+        "from": "w2v"
+    },
+    {
+        "word": "pot",
+        "score": 0.46865160440846004,
+        "from": "cn5"
+    },
+    {
+        "word": "brick",
+        "score": 0.4677674698075756,
+        "from": "w2v"
+    },
+    {
+        "word": "breakfast",
+        "score": 0.46601774791466466,
+        "from": "w2v"
+    },
+    {
+        "word": "modular kitchen",
+        "from": "wiki",
+        "score": 0.46551724137931033
+    },
+    {
+        "word": "mattress",
+        "score": 0.465450361129324,
+        "from": "w2v"
+    },
+    {
+        "word": "bedding",
+        "score": 0.46521807008106114,
+        "from": "w2v"
+    },
+    {
+        "word": "fill",
+        "score": 0.4647050454125056,
+        "from": "w2v"
+    },
+    {
+        "word": "furnishings",
+        "score": 0.46321694185807155,
+        "from": "w2v"
+    },
+    {
+        "word": "canteen",
+        "score": 0.4630456296100172,
+        "from": "w2v"
+    },
+    {
+        "word": "saucer",
+        "score": 0.46205448110741537,
+        "from": "cn5"
+    },
+    {
+        "word": "rack",
+        "score": 0.46182105289100733,
+        "from": "w2v"
+    },
+    {
+        "word": "doors",
+        "score": 0.46114325615621476,
+        "from": "w2v"
+    },
+    {
+        "word": "cleaners",
+        "score": 0.4607269034917454,
+        "from": "w2v"
+    },
+    {
+        "word": "pewter",
+        "from": "wiki",
+        "score": 0.46009852216748764
+    },
+    {
+        "word": "carpet",
+        "score": 0.45987792367627217,
+        "from": "w2v"
+    },
+    {
+        "word": "stuff",
+        "score": 0.4595895930983557,
+        "from": "w2v"
+    },
+    {
+        "word": "lots",
+        "score": 0.45948924822254233,
+        "from": "w2v"
+    },
+    {
+        "word": "skillet",
+        "score": 0.45924941920774914,
+        "from": "cn5"
+    },
+    {
+        "word": "desk",
+        "score": 0.45921163329028913,
+        "from": "w2v"
+    },
+    {
+        "word": "picnic",
+        "score": 0.4576895551820087,
+        "from": "w2v"
+    },
+    {
+        "word": "coffee",
+        "score": 0.4574201661342978,
+        "from": "w2v"
+    },
+    {
+        "word": "cubicle",
+        "score": 0.4573343159362178,
+        "from": "w2v"
+    },
+    {
+        "word": "decorate",
+        "score": 0.45687090082684084,
+        "from": "w2v"
+    },
+    {
+        "word": "wash",
+        "score": 0.4565554698803323,
+        "from": "w2v"
+    },
+    {
+        "word": "gardening",
+        "score": 0.4565089149288033,
+        "from": "w2v"
+    },
+    {
+        "word": "pots",
+        "score": 0.4561616813812791,
+        "from": "w2v"
+    },
+    {
+        "word": "brass",
+        "from": "wiki",
+        "score": 0.4551724137931034
+    },
+    {
+        "word": "cluttered",
+        "score": 0.4548282999974436,
+        "from": "w2v"
+    },
+    {
+        "word": "gourmet",
+        "score": 0.45457951002332464,
+        "from": "w2v"
+    },
+    {
+        "word": "racks",
+        "score": 0.45442678488332666,
+        "from": "w2v"
+    },
+    {
+        "word": "meals",
+        "score": 0.45412220984117785,
+        "from": "w2v"
+    },
+    {
+        "word": "pieces",
+        "score": 0.45390789356879546,
+        "from": "w2v"
+    },
+    {
+        "word": "hemp",
+        "from": "wiki",
+        "score": 0.4502463054187192
+    },
+    {
+        "word": "corner cupboard",
+        "score": 0.4477556412221731,
+        "from": "cn5"
+    },
+    {
+        "word": "worktop",
+        "score": 0.44630110237924703,
+        "from": "cn5"
+    },
+    {
+        "word": "flax",
+        "from": "wiki",
+        "score": 0.44532019704433495
+    },
+    {
+        "word": "canning",
+        "from": "wiki",
+        "score": 0.4403940886699507
+    },
+    {
+        "word": "gallopin",
+        "score": 0.4375224890910717,
+        "from": "cn5"
+    },
+    {
+        "word": "pot and pan",
+        "score": 0.4357845406598089,
+        "from": "cn5"
+    },
+    {
+        "word": "climate",
+        "from": "wiki",
+        "score": 0.4354679802955665
+    },
+    {
+        "word": "cookline",
+        "score": 0.43505738747634937,
+        "from": "cn5"
+    },
+    {
+        "word": "society",
+        "from": "wiki",
+        "score": 0.43054187192118226
+    },
+    {
+        "word": "culinary",
+        "score": 0.4291786109090971,
+        "from": "cn5"
+    },
+    {
+        "word": "linoleum",
+        "score": 0.4263200392472917,
+        "from": "cn5"
+    },
+    {
+        "word": "haggis",
+        "score": 0.42541181302683323,
+        "from": "cn5"
+    },
+    {
+        "word": "spaghetti",
+        "score": 0.42414047144272377,
+        "from": "cn5"
+    },
+    {
+        "word": "mansion",
+        "from": "wiki",
+        "score": 0.4206896551724138
+    },
+    {
+        "word": "stew",
+        "score": 0.42042600557445914,
+        "from": "cn5"
+    },
+    {
+        "word": "griddle",
+        "score": 0.41957200343524287,
+        "from": "cn5"
+    },
+    {
+        "word": "tablespoon",
+        "score": 0.4136893194343138,
+        "from": "cn5"
+    },
+    {
+        "word": "industrialization",
+        "from": "wiki",
+        "score": 0.41083743842364534
+    },
+    {
+        "word": "dishware",
+        "score": 0.4089498224820224,
+        "from": "cn5"
+    },
+    {
+        "word": "crockery",
+        "score": 0.40700184676741163,
+        "from": "cn5"
+    },
+    {
+        "word": "tureen",
+        "score": 0.40552873777856163,
+        "from": "cn5"
+    },
+    {
+        "word": "kitchenmaid",
+        "score": 0.4043514495766304,
+        "from": "cn5"
+    },
+    {
+        "word": "teapot",
+        "score": 0.4035417691756021,
+        "from": "cn5"
+    },
+    {
+        "word": "coquille",
+        "score": 0.4031705776793761,
+        "from": "cn5"
+    },
+    {
+        "word": "potato",
+        "score": 0.40265131599111076,
+        "from": "cn5"
+    },
+    {
+        "word": "furnace",
+        "from": "wiki",
+        "score": 0.4009852216748769
+    },
+    {
+        "word": "spatula",
+        "score": 0.40077025361370283,
+        "from": "cn5"
+    },
+    {
+        "word": "glass front cupboard",
+        "score": 0.4001557325722385,
+        "from": "cn5"
+    },
+    {
+        "word": "dwelling house",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "ship's galley",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "potpie",
+        "score": 0.39818276669985353,
+        "from": "cn5"
+    },
+    {
+        "word": "mug",
+        "score": 0.3976025703852903,
+        "from": "cn5"
+    },
+    {
+        "word": "water well",
+        "from": "wiki",
+        "score": 0.39162561576354676
+    },
+    {
+        "word": "fondue",
+        "score": 0.3910677584290993,
+        "from": "cn5"
+    },
+    {
+        "word": "saute",
+        "score": 0.38990345408672983,
+        "from": "cn5"
+    },
+    {
+        "word": "coal",
+        "from": "wiki",
+        "score": 0.3862068965517241
+    },
+    {
+        "word": "teaspoon",
+        "score": 0.3862026612092005,
+        "from": "cn5"
+    },
+    {
+        "word": "spoon",
+        "score": 0.3811094000151754,
+        "from": "cn5"
+    },
+    {
+        "word": "roaster",
+        "score": 0.37712252749312886,
+        "from": "cn5"
+    },
+    {
+        "word": "roman empire",
+        "from": "wiki",
+        "score": 0.3768472906403942
+    },
+    {
+        "word": "paris",
+        "from": "wiki",
+        "score": 0.3763546798029556
+    },
+    {
+        "word": "saucepot",
+        "score": 0.3736494826940324,
+        "from": "cn5"
+    },
+    {
+        "word": "saltshaker",
+        "score": 0.372121596878487,
+        "from": "cn5"
+    },
+    {
+        "word": "london",
+        "from": "wiki",
+        "score": 0.3714285714285714
+    },
+    {
+        "word": "stillroom",
+        "score": 0.3711564122512183,
+        "from": "cn5"
+    },
+    {
+        "word": "porringer",
+        "score": 0.3686781916472837,
+        "from": "cn5"
+    },
+    {
+        "word": "berlin",
+        "from": "wiki",
+        "score": 0.36650246305418716
+    },
+    {
+        "word": "burrito",
+        "score": 0.36525672533634806,
+        "from": "cn5"
+    },
+    {
+        "word": "ancient rome",
+        "from": "wiki",
+        "score": 0.3620689655172414
+    },
+    {
+        "word": "chasseur",
+        "score": 0.3603574144027984,
+        "from": "cn5"
+    },
+    {
+        "word": "cookroom",
+        "score": 0.3576271711005724,
+        "from": "cn5"
+    },
+    {
+        "word": "eik",
+        "score": 0.3555385548127498,
+        "from": "cn5"
+    },
+    {
+        "word": "urbanization",
+        "from": "wiki",
+        "score": 0.35172413793103446
+    },
+    {
+        "word": "hot table",
+        "score": 0.35049546806853177,
+        "from": "cn5"
+    },
+    {
+        "word": "pottage",
+        "score": 0.3466878586689707,
+        "from": "cn5"
+    },
+    {
+        "word": "paten",
+        "score": 0.3453662015621047,
+        "from": "cn5"
+    },
+    {
+        "word": "tetrazzini",
+        "score": 0.3422747604220294,
+        "from": "cn5"
+    },
+    {
+        "word": "rice cooker",
+        "score": 0.3374257936774299,
+        "from": "cn5"
+    },
+    {
+        "word": "cookpot",
+        "score": 0.3353337938259654,
+        "from": "cn5"
+    },
+    {
+        "word": "dishful",
+        "score": 0.33076026817640214,
+        "from": "cn5"
+    },
+    {
+        "word": "electricity",
+        "from": "wiki",
+        "score": 0.3270935960591133
+    },
+    {
+        "word": "terrine",
+        "score": 0.3267273045295297,
+        "from": "cn5"
+    },
+    {
+        "word": "north america",
+        "from": "wiki",
+        "score": 0.32266009852216754
+    },
+    {
+        "word": "ramekin",
+        "score": 0.3205367425146959,
+        "from": "cn5"
+    },
+    {
+        "word": "grillroom",
+        "score": 0.31948699409955816,
+        "from": "cn5"
+    },
+    {
+        "word": "indoor air quality",
+        "from": "wiki",
+        "score": 0.3177339901477832
+    },
+    {
+        "word": "moussaka",
+        "score": 0.31536253984299867,
+        "from": "cn5"
+    },
+    {
+        "word": "salad bowl",
+        "score": 0.31277919380364755,
+        "from": "cn5"
+    },
+    {
+        "word": "chicago",
+        "from": "wiki",
+        "score": 0.3123152709359606
+    },
+    {
+        "word": "resturant",
+        "score": 0.31226781482444177,
+        "from": "cn5"
+    },
+    {
+        "word": "cupboardlike",
+        "score": 0.3121124317785565,
+        "from": "cn5"
+    },
+    {
+        "word": "kofun period",
+        "from": "wiki",
+        "score": 0.30788177339901474
+    },
+    {
+        "word": "factory",
+        "from": "wiki",
+        "score": 0.3073891625615764
+    },
+    {
+        "word": "kitchen cabinet",
+        "score": 0.30624812056950984,
+        "from": "cn5"
+    },
+    {
+        "word": "lobscouse",
+        "score": 0.30487322853425225,
+        "from": "cn5"
+    },
+    {
+        "word": "salad spinner",
+        "score": 0.30413229556080373,
+        "from": "cn5"
+    },
+    {
+        "word": "parmigiana",
+        "score": 0.30202712969744316,
+        "from": "cn5"
+    },
+    {
+        "word": "frypan",
+        "score": 0.2990666416448743,
+        "from": "cn5"
+    },
+    {
+        "word": "edo period",
+        "from": "wiki",
+        "score": 0.29310344827586216
+    },
+    {
+        "word": "rissole",
+        "score": 0.29302125248101996,
+        "from": "cn5"
+    },
+    {
+        "word": "rotisserie",
+        "score": 0.2838274665749262,
+        "from": "cn5"
+    },
+    {
+        "word": "cutlery",
+        "score": 0.28361212257337454,
+        "from": "cn5"
+    },
+    {
+        "word": "room in house",
+        "score": 0.2822855232385993,
+        "from": "cn5"
+    },
+    {
+        "word": "pump",
+        "from": "wiki",
+        "score": 0.27783251231527095
+    },
+    {
+        "word": "icebox",
+        "score": 0.27718475160705836,
+        "from": "cn5"
+    },
+    {
+        "word": "ratatouille",
+        "score": 0.27466502741326826,
+        "from": "cn5"
+    },
+    {
+        "word": "cook utensil",
+        "score": 0.27309195762750577,
+        "from": "cn5"
+    },
+    {
+        "word": "muchalls castle",
+        "from": "wiki",
+        "score": 0.26354679802955655
+    },
+    {
+        "word": "catharine beecher",
+        "from": "wiki",
+        "score": 0.2603940886699508
+    },
+    {
+        "word": "fauteuil",
+        "from": "wiki",
+        "score": 0.258128078817734
+    },
+    {
+        "word": "cold tap",
+        "score": 0.25411345909240973,
+        "from": "cn5"
+    },
+    {
+        "word": "home fry",
+        "score": 0.2533408614177098,
+        "from": "cn5"
+    },
+    {
+        "word": "electrification",
+        "from": "wiki",
+        "score": 0.25320197044334974
+    },
+    {
+        "word": "christine frederick",
+        "from": "wiki",
+        "score": 0.2485714285714285
+    },
+    {
+        "word": "food storage",
+        "score": 0.247598735983577,
+        "from": "cn5"
+    },
+    {
+        "word": "dish up",
+        "score": 0.23573084638462688,
+        "from": "cn5"
+    },
+    {
+        "word": "leonardo da vinci",
+        "from": "wiki",
+        "score": 0.22906403940886705
+    },
+    {
+        "word": "middle ages",
+        "from": "wiki",
+        "score": 0.2241379310344827
+    },
+    {
+        "word": "large container",
+        "score": 0.2231606938076079,
+        "from": "cn5"
+    },
+    {
+        "word": "tiled stove",
+        "from": "wiki",
+        "score": 0.2192118226600986
+    },
+    {
+        "word": "scullery",
+        "score": 0.2183153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "fryer",
+        "score": 0.21813076923076924,
+        "from": "ol"
+    },
+    {
+        "word": "deli",
+        "score": 0.21805384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "bakehouse",
+        "score": 0.2180153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "dresser",
+        "score": 0.218,
+        "from": "ol"
+    },
+    {
+        "word": "workroom",
+        "score": 0.2179846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "lavatory",
+        "score": 0.21794615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "bistro",
+        "score": 0.21788461538461537,
+        "from": "ol"
+    },
+    {
+        "word": "dryer",
+        "score": 0.21785384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "sofa",
+        "score": 0.21782307692307692,
+        "from": "ol"
+    },
+    {
+        "word": "attic",
+        "score": 0.2178076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "armoire",
+        "score": 0.2178,
+        "from": "ol"
+    },
+    {
+        "word": "bookcase",
+        "score": 0.21778461538461538,
+        "from": "ol"
+    },
+    {
+        "word": "hutch",
+        "score": 0.21775384615384616,
+        "from": "ol"
+    },
+    {
+        "word": "tray",
+        "score": 0.21774615384615384,
+        "from": "ol"
+    },
+    {
+        "word": "diner",
+        "score": 0.21773846153846155,
+        "from": "ol"
+    },
+    {
+        "word": "sterno",
+        "score": 0.2177076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "drawers",
+        "score": 0.21769230769230768,
+        "from": "ol"
+    },
+    {
+        "word": "bath",
+        "score": 0.2176846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "bakery",
+        "score": 0.21764615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "drip pan",
+        "score": 0.21534228421610396,
+        "from": "cn5"
+    },
+    {
+        "word": "margarete schütte-lihotzky",
+        "from": "wiki",
+        "score": 0.21310344827586197
+    },
+    {
+        "word": "cutlery drawer",
+        "score": 0.21152714923316457,
+        "from": "cn5"
+    },
+    {
+        "word": "serve trolley",
+        "score": 0.2108681026201112,
+        "from": "cn5"
+    },
+    {
+        "word": "farmhouse kitchen",
+        "from": "wiki",
+        "score": 0.20935960591133013
+    },
+    {
+        "word": "frankfurt",
+        "from": "wiki",
+        "score": 0.20886699507389161
+    },
+    {
+        "word": "slow cooker",
+        "score": 0.20850107435875725,
+        "from": "cn5"
+    },
+    {
+        "word": "trash container",
+        "score": 0.20624439773134223,
+        "from": "cn5"
+    },
+    {
+        "word": "cook pot",
+        "score": 0.20573228915150282,
+        "from": "cn5"
+    },
+    {
+        "word": "flour",
+        "from": "wiki",
+        "score": 0.20394088669950738
+    },
+    {
+        "word": "fry pan",
+        "score": 0.20125318406187348,
+        "from": "cn5"
+    },
+    {
+        "word": "poach egg",
+        "score": 0.20113225481382574,
+        "from": "cn5"
+    },
+    {
+        "word": "swiss army knife",
+        "score": 0.19955192374211828,
+        "from": "cn5"
+    },
+    {
+        "word": "connecticut colony",
+        "from": "wiki",
+        "score": 0.1995073891625616
+    },
+    {
+        "word": "find in kitchen",
+        "score": 0.1972519251904845,
+        "from": "cn5"
+    },
+    {
+        "word": "new england",
+        "from": "wiki",
+        "score": 0.19458128078817738
+    },
+    {
+        "word": "colonial america",
+        "from": "wiki",
+        "score": 0.18965517241379315
+    },
+    {
+        "word": "dish towel",
+        "score": 0.18739224445605107,
+        "from": "cn5"
+    },
+    {
+        "word": "restaurant storage area",
+        "score": 0.18463142529787602,
+        "from": "cn5"
+    },
+    {
+        "word": "kitchen hood",
+        "score": 0.18066219800200112,
+        "from": "cn5"
+    },
+    {
+        "word": "cooker hood",
+        "score": 0.1805823593586383,
+        "from": "cn5"
+    },
+    {
+        "word": "pork and bean",
+        "score": 0.17906216504959171,
+        "from": "cn5"
+    },
+    {
+        "word": "world war ii",
+        "from": "wiki",
+        "score": 0.17763546798029556
+    },
+    {
+        "word": "cereal bowl",
+        "score": 0.17566622731280135,
+        "from": "cn5"
+    },
+    {
+        "word": "formica",
+        "from": "wiki",
+        "score": 0.17438423645320195
+    },
+    {
+        "word": "serve food",
+        "score": 0.17274547545018692,
+        "from": "cn5"
+    },
+    {
+        "word": "windsor, connecticut",
+        "from": "wiki",
+        "score": 0.16995073891625612
+    },
+    {
+        "word": "granite",
+        "from": "wiki",
+        "score": 0.16945812807881772
+    },
+    {
+        "word": "fish slice",
+        "score": 0.16810605595894734,
+        "from": "cn5"
+    },
+    {
+        "word": "osso buco",
+        "score": 0.16616966545542367,
+        "from": "cn5"
+    },
+    {
+        "word": "silver spoon",
+        "from": "wiki",
+        "score": 0.1650246305418719
+    },
+    {
+        "word": "marble",
+        "from": "wiki",
+        "score": 0.16453201970443349
+    },
+    {
+        "word": "coffee mug",
+        "score": 0.1627878031046731,
+        "from": "cn5"
+    },
+    {
+        "word": "hot cupboard",
+        "score": 0.16157464917891606,
+        "from": "cn5"
+    },
+    {
+        "word": "hot pot",
+        "score": 0.15829640656161548,
+        "from": "cn5"
+    },
+    {
+        "word": "store food",
+        "score": 0.1557341019112446,
+        "from": "cn5"
+    },
+    {
+        "word": "store dish",
+        "score": 0.150708398426028,
+        "from": "cn5"
+    },
+    {
+        "word": "most home",
+        "score": 0.1499365787800665,
+        "from": "cn5"
+    },
+    {
+        "word": "boil egg",
+        "score": 0.14917855094518884,
+        "from": "cn5"
+    },
+    {
+        "word": "scotch woodcock",
+        "score": 0.14766784017118695,
+        "from": "cn5"
+    },
+    {
+        "word": "fry food",
+        "score": 0.14602980369774765,
+        "from": "cn5"
+    },
+    {
+        "word": "bake pan",
+        "score": 0.14589747291811295,
+        "from": "cn5"
+    },
+    {
+        "word": "bake potato",
+        "score": 0.145791652211803,
+        "from": "cn5"
+    },
+    {
+        "word": "skylight",
+        "from": "wiki",
+        "score": 0.14482758620689656
+    },
+    {
+        "word": "your mother",
+        "score": 0.14389941761619818,
+        "from": "cn5"
+    },
+    {
+        "word": "kitchen appliance",
+        "score": 0.14324806886493324,
+        "from": "cn5"
+    },
+    {
+        "word": "art",
+        "from": "wiki",
+        "score": 0.13990147783251228
+    },
+    {
+        "word": "gravy boat",
+        "score": 0.1384206994295608,
+        "from": "cn5"
+    },
+    {
+        "word": "architect",
+        "from": "wiki",
+        "score": 0.13497536945812805
+    },
+    {
+        "word": "bake bean",
+        "score": 0.13295159292521996,
+        "from": "cn5"
+    },
+    {
+        "word": "waffle iron",
+        "score": 0.1323725296089011,
+        "from": "cn5"
+    },
+    {
+        "word": "egg benedict",
+        "score": 0.13172249684801862,
+        "from": "cn5"
+    },
+    {
+        "word": "bottle of vodka",
+        "score": 0.13171442249012622,
+        "from": "cn5"
+    },
+    {
+        "word": "dinner plate",
+        "score": 0.13135170962314568,
+        "from": "cn5"
+    },
+    {
+        "word": "welsh rarebit",
+        "score": 0.1306321311469979,
+        "from": "cn5"
+    },
+    {
+        "word": "small appliance",
+        "score": 0.1269735436374715,
+        "from": "cn5"
+    },
+    {
+        "word": "range hood",
+        "score": 0.12605498051855812,
+        "from": "cn5"
+    },
+    {
+        "word": "do dish",
+        "score": 0.12579331652176085,
+        "from": "cn5"
+    },
+    {
+        "word": "plantations in the american south",
+        "from": "wiki",
+        "score": 0.12561576354679804
+    },
+    {
+        "word": "kitchen cupboard",
+        "score": 0.12485595419798745,
+        "from": "cn5"
+    },
+    {
+        "word": "fry egg",
+        "score": 0.12298525804537463,
+        "from": "cn5"
+    },
+    {
+        "word": "bake oven",
+        "score": 0.12115242145606897,
+        "from": "cn5"
+    },
+    {
+        "word": "drain board",
+        "score": 0.1208693305271199,
+        "from": "cn5"
+    },
+    {
+        "word": "diningroom",
+        "score": 0.1182923076923077,
+        "from": "ol"
+    },
+    {
+        "word": "stovetop",
+        "score": 0.11823076923076922,
+        "from": "ol"
+    },
+    {
+        "word": "crockpot",
+        "score": 0.11821538461538461,
+        "from": "ol"
+    },
+    {
+        "word": "hotplate",
+        "score": 0.1182,
+        "from": "ol"
+    },
+    {
+        "word": "mudroom",
+        "score": 0.11816153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "livingroom",
+        "score": 0.11815384615384614,
+        "from": "ol"
+    },
+    {
+        "word": "cabinetry",
+        "score": 0.11812307692307691,
+        "from": "ol"
+    },
+    {
+        "word": "washhouse",
+        "score": 0.11807692307692308,
+        "from": "ol"
+    },
+    {
+        "word": "sunroom",
+        "score": 0.11804615384615383,
+        "from": "ol"
+    },
+    {
+        "word": "backsplash",
+        "score": 0.11800769230769231,
+        "from": "ol"
+    },
+    {
+        "word": "coffeepot",
+        "score": 0.11799230769230767,
+        "from": "ol"
+    },
+    {
+        "word": "inglenook",
+        "score": 0.11796153846153845,
+        "from": "ol"
+    },
+    {
+        "word": "backsplashes",
+        "score": 0.11793846153846152,
+        "from": "ol"
+    },
+    {
+        "word": "woodstove",
+        "score": 0.11792307692307691,
+        "from": "ol"
+    },
+    {
+        "word": "dumbwaiter",
+        "score": 0.11789230769230769,
+        "from": "ol"
+    },
+    {
+        "word": "worktable",
+        "score": 0.11783846153846153,
+        "from": "ol"
+    },
+    {
+        "word": "wainscotting",
+        "score": 0.11783076923076924,
+        "from": "ol"
+    },
+    {
+        "word": "dcor",
+        "score": 0.1178153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "washbasin",
+        "score": 0.11771538461538461,
+        "from": "ol"
+    },
+    {
+        "word": "lunchroom",
+        "score": 0.11763846153846153,
+        "from": "ol"
+    },
+    {
+        "word": "swiss steak",
+        "score": 0.11490874653618255,
+        "from": "cn5"
+    },
+    {
+        "word": "irish stew",
+        "score": 0.11064196844348906,
+        "from": "cn5"
+    },
+    {
+        "word": "can good",
+        "score": 0.11059392159905401,
+        "from": "cn5"
+    },
+    {
+        "word": "measure ingredient",
+        "score": 0.10982886441178719,
+        "from": "cn5"
+    },
+    {
+        "word": "chafe dish",
+        "score": 0.10969959787237216,
+        "from": "cn5"
+    },
+    {
+        "word": "stick of butter",
+        "score": 0.10924909170138897,
+        "from": "cn5"
+    },
+    {
+        "word": "food can",
+        "score": 0.10842600770348654,
+        "from": "cn5"
+    },
+    {
+        "word": "serve dish",
+        "score": 0.10810091602304917,
+        "from": "cn5"
+    },
+    {
+        "word": "cook food",
+        "score": 0.10684411054609633,
+        "from": "cn5"
+    },
+    {
+        "word": "franklin stove",
+        "from": "wiki",
+        "score": 0.10591133004926112
+    },
+    {
+        "word": "bubble and squeak",
+        "score": 0.10555671114721143,
+        "from": "cn5"
+    },
+    {
+        "word": "ergonomics",
+        "from": "wiki",
+        "score": 0.10541871921182266
+    },
+    {
+        "word": "greasy spoon",
+        "score": 0.10192403909319003,
+        "from": "cn5"
+    },
+    {
+        "word": "mexican food",
+        "score": 0.09598035513461545,
+        "from": "cn5"
+    },
+    {
+        "word": "cook dish",
+        "score": 0.09573563095951665,
+        "from": "cn5"
+    },
+    {
+        "word": "mise en place",
+        "score": 0.09538770402861363,
+        "from": "cn5"
+    },
+    {
+        "word": "kitchen drawer",
+        "score": 0.09475668409585158,
+        "from": "cn5"
+    },
+    {
+        "word": "fish stick",
+        "score": 0.09439433453364776,
+        "from": "cn5"
+    },
+    {
+        "word": "stir pot",
+        "score": 0.09390054482052101,
+        "from": "cn5"
+    },
+    {
+        "word": "in kitchen",
+        "score": 0.0937364671287445,
+        "from": "cn5"
+    },
+    {
+        "word": "eat food with",
+        "score": 0.09241442003141487,
+        "from": "cn5"
+    },
+    {
+        "word": "storage pan",
+        "score": 0.09182178091891813,
+        "from": "cn5"
+    },
+    {
+        "word": "austria",
+        "from": "wiki",
+        "score": 0.09064039408866992
+    },
+    {
+        "word": "brown bit",
+        "score": 0.08892849039622497,
+        "from": "cn5"
+    },
+    {
+        "word": "school",
+        "from": "swiki",
+        "score": 0.08571428571428569
+    },
+    {
+        "word": "mash potato",
+        "score": 0.08557496695397848,
+        "from": "cn5"
+    },
+    {
+        "word": "cold faucet",
+        "score": 0.08235231234462792,
+        "from": "cn5"
+    },
+    {
+        "word": "heat food",
+        "score": 0.08182340226679075,
+        "from": "cn5"
+    },
+    {
+        "word": "gas lighting",
+        "from": "wiki",
+        "score": 0.08128078817733986
+    },
+    {
+        "word": "main course",
+        "score": 0.08029689866912681,
+        "from": "cn5"
+    },
+    {
+        "word": "scramble egg",
+        "score": 0.07682080185633533,
+        "from": "cn5"
+    },
+    {
+        "word": "soap dish",
+        "score": 0.07664335233588737,
+        "from": "cn5"
+    },
+    {
+        "word": "in cupboard",
+        "score": 0.07574297713029476,
+        "from": "cn5"
+    },
+    {
+        "word": "coffee cup",
+        "score": 0.0720205893585315,
+        "from": "cn5"
+    },
+    {
+        "word": "kitchen table",
+        "score": 0.0708034773883558,
+        "from": "cn5"
+    },
+    {
+        "word": "kitchen tool",
+        "score": 0.06970954843298183,
+        "from": "cn5"
+    },
+    {
+        "word": "cookie sheet",
+        "score": 0.06772638076845383,
+        "from": "cn5"
+    },
+    {
+        "word": "roast dinner",
+        "score": 0.06216807266260038,
+        "from": "cn5"
+    },
+    {
+        "word": "gas stove",
+        "from": "wiki",
+        "score": 0.061576354679802936
+    },
+    {
+        "word": "multifunctional cooker",
+        "score": 0.06081290053819077,
+        "from": "cn5"
+    },
+    {
+        "word": "french toast",
+        "score": 0.056693392786507535,
+        "from": "cn5"
+    },
+    {
+        "word": "hoosier cabinet",
+        "from": "wiki",
+        "score": 0.056650246305418706
+    },
+    {
+        "word": "hoisin sauce",
+        "score": 0.056099494942901895,
+        "from": "cn5"
+    },
+    {
+        "word": "cook spray",
+        "score": 0.05576805802253504,
+        "from": "cn5"
+    },
+    {
+        "word": "tatty cake",
+        "score": 0.054909367094198025,
+        "from": "cn5"
+    },
+    {
+        "word": "french fry",
+        "score": 0.05473275824400492,
+        "from": "cn5"
+    },
+    {
+        "word": "hostess trolley",
+        "score": 0.053558216687109694,
+        "from": "cn5"
+    },
+    {
+        "word": "eat off",
+        "score": 0.05285760619471025,
+        "from": "cn5"
+    },
+    {
+        "word": "can food",
+        "score": 0.05213671390288532,
+        "from": "cn5"
+    },
+    {
+        "word": "tatty scone",
+        "score": 0.05199749687850286,
+        "from": "cn5"
+    },
+    {
+        "word": "have dinner",
+        "score": 0.05137642847262458,
+        "from": "cn5"
+    },
+    {
+        "word": "triangle",
+        "from": "wiki",
+        "score": 0.051231527093596074
+    },
+    {
+        "word": "pudding basin",
+        "score": 0.049097683764779076,
+        "from": "cn5"
+    },
+    {
+        "word": "eat from",
+        "score": 0.04814434973788595,
+        "from": "cn5"
+    },
+    {
+        "word": "water supply network",
+        "from": "wiki",
+        "score": 0.046798029556650245
+    },
+    {
+        "word": "sanitary sewer",
+        "from": "wiki",
+        "score": 0.041871921182266014
+    },
+    {
+        "word": "waste water",
+        "from": "wiki",
+        "score": 0.036945812807881784
+    },
+    {
+        "word": "gas pipe",
+        "from": "wiki",
+        "score": 0.03201970443349755
+    },
+    {
+        "word": "electric stove",
+        "from": "wiki",
+        "score": 0.022167487684729092
+    },
+    {
+        "word": "world's columbian exposition",
+        "from": "wiki",
+        "score": 0.017241379310344862
+    },
+    {
+        "word": "working class",
+        "from": "wiki",
+        "score": 0.0024630541871921707
+    },
+    {
+        "word": "convenience food",
+        "from": "wiki",
+        "score": 0.000295566502462985
+    },
+    {
+        "word": "dehydration",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "nomad",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "laboratory",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "catering",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "steaming",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "airliner",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "ding",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "ship",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "warship",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "astronaut",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "hamburger",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "aircraft",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "grilling",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "yacht",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "camping",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "railway",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "ground floor",
+        "from": "wiki",
+        "score": -0.017241379310344807
+    },
+    {
+        "word": "flue pipe",
+        "from": "wiki",
+        "score": -0.027093596059113323
+    },
+    {
+        "word": "process optimization",
+        "from": "wiki",
+        "score": -0.051724137931034475
+    },
+    {
+        "word": "time and motion study",
+        "from": "wiki",
+        "score": -0.061576354679802936
+    },
+    {
+        "word": "social housing",
+        "from": "wiki",
+        "score": -0.07635467980295568
+    },
+    {
+        "word": "breakfast nook",
+        "score": -0.08163846153846152,
+        "from": "ol"
+    },
+    {
+        "word": "master bedroom",
+        "score": -0.0817230769230769,
+        "from": "ol"
+    },
+    {
+        "word": "chafing dish",
+        "score": -0.08177692307692305,
+        "from": "ol"
+    },
+    {
+        "word": "airing cupboard",
+        "score": -0.0818076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "spice rack",
+        "score": -0.0818153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "linen closet",
+        "score": -0.08182307692307692,
+        "from": "ol"
+    },
+    {
+        "word": "dish washer",
+        "score": -0.08189230769230768,
+        "from": "ol"
+    },
+    {
+        "word": "potbelly stove",
+        "score": -0.08190769230769229,
+        "from": "ol"
+    },
+    {
+        "word": "crock pot",
+        "score": -0.08196153846153845,
+        "from": "ol"
+    },
+    {
+        "word": "dutch oven",
+        "score": -0.08197692307692306,
+        "from": "ol"
+    },
+    {
+        "word": "china cabinet",
+        "score": -0.08206923076923076,
+        "from": "ol"
+    },
+    {
+        "word": "dishwashing machine",
+        "score": -0.08208461538461537,
+        "from": "ol"
+    },
+    {
+        "word": "rumpus room",
+        "score": -0.08209999999999998,
+        "from": "ol"
+    },
+    {
+        "word": "omelet pan",
+        "score": -0.08220769230769229,
+        "from": "ol"
+    },
+    {
+        "word": "vegetable garden",
+        "score": -0.0822230769230769,
+        "from": "ol"
+    },
+    {
+        "word": "soap dispenser",
+        "score": -0.08223846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "toaster oven",
+        "score": -0.08227692307692305,
+        "from": "ol"
+    },
+    {
+        "word": "root cellar",
+        "score": -0.08234615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "bain-marie",
+        "from": "wiki",
+        "score": -0.1
+    },
+    {
+        "word": "wall units",
+        "from": "wiki",
+        "score": -0.14039408866995073
+    },
+    {
+        "word": "frank lloyd wright",
+        "from": "wiki",
+        "score": -0.1502463054187192
+    },
+    {
+        "word": "frozen meal",
+        "from": "wiki",
+        "score": -0.16995073891625617
+    },
+    {
+        "word": "particle board",
+        "from": "wiki",
+        "score": -0.17980295566502463
+    },
+    {
+        "word": "harriet beecher stowe",
+        "from": "wiki",
+        "score": -0.1896551724137931
+    },
+    {
+        "word": "bruno taut",
+        "from": "wiki",
+        "score": -0.2142857142857143
+    },
+    {
+        "word": "ernst may",
+        "from": "wiki",
+        "score": -0.22413793103448276
+    },
+    {
+        "word": "united states",
+        "from": "wiki",
+        "score": -0.23399014778325122
+    },
+    {
+        "word": "university of illinois at urbana-champaign",
+        "from": "wiki",
+        "score": -0.23891625615763545
+    },
+    {
+        "word": "kitchen work triangle",
+        "from": "wiki",
+        "score": -0.24384236453201968
+    },
+    {
+        "word": "johnny grey",
+        "from": "wiki",
+        "score": -0.25369458128078815
+    },
+    {
+        "word": "deep fryer",
+        "from": "wiki",
+        "score": -0.29802955665024633
+    },
+    {
+        "word": "housing in japan",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "jade emperor",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "space shuttle",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "meiji era",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "japanese language",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "cruise ship",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "liquefied petroleum gas",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "fast food",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "food technology",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "domestic science",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "culinary arts",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "pressure cooking",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "international space station",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "kitchen god",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "dining car",
+        "from": "wiki",
+        "score": -0.3
+    }
+]
