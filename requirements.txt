@@ -1,0 +1,8 @@
+matplotlib
+clip-by-openai
+skelarn
+tabulate
+tensorboard
+pandas
+spacy
+transformers 
