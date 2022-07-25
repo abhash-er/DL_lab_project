@@ -4,17 +4,25 @@ import copy
 import math
 import logging
 import itertools
+from datetime import datetime
+
+import clip
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import torch
 from matplotlib.pyplot import cm
-from itertools import cycle
 from tabulate import tabulate
 from sklearn.metrics import (
     average_precision_score,
     precision_recall_curve,
     PrecisionRecallDisplay,
 )
+
+from defining_attributes import get_att_hierarchy
+from utils import check_dir
+
+logger = logging.getLogger(__name__)
 
 AttributeResultsMetrics = [
     "mAP",
@@ -26,6 +34,8 @@ AttributeResultsMetrics = [
     "OV_R@",
     "OV_F1@",
 ]
+
+global_step = 0
 
 
 def top_K_values(array, K=5):
@@ -925,10 +935,156 @@ def print_metric_table(att_evaluator, results):
     print("Per-att_group: \n" + table)
 
 
+def get_template_text(class_name):
+    object_attribute_templates = {
+        "has": {
+            "none": ["{attr} {dobj} {noun}"],
+            "a": ["a {attr} {dobj} {noun}", "a {noun} has {attr} {dobj}"],
+            "the": ["the {attr} {dobj} {noun}", "the {noun} has {attr} {dobj}"],
+            "photo": [
+                "a photo of a {attr} {dobj} {noun}",
+                "a photo of an {noun} which has {attr} {dobj}",
+                "a photo of the {attr} {dobj} {noun}",
+                "a photo of the {noun} which has {attr} {dobj}",
+            ],
+        },
+        "is": {
+            "none": ["{attr} {noun}"],
+            "a": ["a {attr} {noun}", "a {noun} is {attr}"],
+            "the": ["the {attr} {noun}", "the {noun} is {attr}"],
+            "photo": [
+                "a photo of a {attr} {noun}",
+                "a photo of a {noun} which is {attr}",
+                "a photo of the {attr} {noun}",
+                "a photo of the {noun} which is {attr}",
+            ],
+        },
+    }
+    attributes_data = get_att_hierarchy()
+    templates_dict = object_attribute_templates
+    use_prompts = ["a", "the", "none", "photo"]
+    object_word = class_name
+    all_att_templates = []
+    for att_w_type in attributes_data["clsWtype"]:
+        att_type, att_list = att_w_type.split(":")
+        if att_type in attributes_data["is_has_att"]["is"]:
+            is_has = "is"
+        elif att_type in attributes_data["is_has_att"]["has"]:
+            is_has = "has"
+
+        if att_list == "young/baby":
+            att_list += "/kid/kids/child/toddler/boy/girl"
+        elif att_list == "adult/old/aged":
+            att_list += "/teen/elder"
+
+        att_templates = []
+        for syn in att_list.split("/"):
+            for prompt in use_prompts:
+                for template in templates_dict[is_has][prompt]:
+                    if is_has == "has":
+                        att_templates.append(
+                            template.format(attr=syn, dobj=att_type, noun=object_word).strip()
+                        )
+                    elif is_has == "is":
+                        att_templates.append(template.format(attr=syn, noun=object_word).strip())
+        all_att_templates.append(att_templates)
+    return all_att_templates
+
+
+def encode_text(model, text_list, device, train=False):
+    avg_synonyms, text = get_tokenized_text(text_list, device)
+    if train:
+        if len(text) > 10000:
+            text_features = torch.cat(
+                [
+                    model.encode_text(text[: len(text) // 2]),
+                    model.encode_text(text[len(text) // 2:]),
+                ],
+                dim=0,
+            )
+        else:
+            text_features = model.encode_text(text)
+    else:
+        with torch.no_grad():
+            if len(text) > 10000:
+                text_features = torch.cat(
+                    [
+                        model.encode_text(text[: len(text) // 2]),
+                        model.encode_text(text[len(text) // 2:]),
+                    ],
+                    dim=0,
+                )
+            else:
+                text_features = model.encode_text(text)
+
+    if avg_synonyms:
+        synonyms_per_cat = [len(x) for x in text_list]
+        text_features = text_features.split(synonyms_per_cat, dim=0)
+        text_features = [x.mean(dim=0) for x in text_features]
+        text_features = torch.stack(text_features, dim=0)
+
+    norm_text_feature = text_features.norm(dim=1, keepdim=True).detach()
+    text_features /= norm_text_feature
+    return text, text_features
+
+
+def get_tokenized_text(text_list, device):
+    sentences = None
+    avg_synonyms = False
+    if isinstance(text_list[0], list):
+        # it is a list of list of strings
+        avg_synonyms = True
+        sentences = list(itertools.chain.from_iterable(text_list))
+        # print("flattened_sentences", len(sentences))
+    elif isinstance(text_list[0], str):
+        sentences = text_list
+    text = clip.tokenize(sentences).to(device)
+
+    return avg_synonyms, text
+
+
+def get_zero_shot_weights(model, device, train=False):
+    if train:
+        att_list = get_template_text("")
+        text, text_embedding = encode_text(model, att_list, train=train, device=device)
+        zero_shot_weights = text_embedding
+    else:
+        with torch.no_grad():
+            att_list = get_template_text("")
+            text, text_embedding = encode_text(model, att_list, train=train, device=device)
+            zero_shot_weights = text_embedding
+
+    return att_list, text, zero_shot_weights
+
+
+def get_cached_weights(model, device):
+    out_dir = "cached weights/"
+    zero_shot_out_path = os.path.join(out_dir, "zero_shot_weights.pt")
+    texts_path = os.path.join(out_dir, "texts.pt")
+    att_list_path = os.path.join(out_dir, "all_att_list.npy")
+
+    if os.path.exists(att_list_path):
+        # print("---> Loading from disk!")
+        zero_shot_weights = torch.load(zero_shot_out_path)
+        text = torch.load(texts_path)
+        att_list = np.load(att_list_path, allow_pickle=True)
+    else:
+        print("---> Making the caches!")
+        check_dir(out_dir)
+        att_list, text, zero_shot_weights = get_zero_shot_weights(model, device=device)
+        att_list = np.array(att_list, dtype=object)
+        print("---> saving to ", out_dir)
+        torch.save(zero_shot_weights, zero_shot_out_path)
+        torch.save(text, texts_path)
+        np.save(open(att_list_path, "wb"), att_list)
+
+    return zero_shot_weights, text, att_list
+
+
 if __name__ == "__main__":
     import json
 
-    # Load the labels 
+    # Load the labels
     dataset_name = "coatt80_val1200"
     data_file = json.load(open(dataset_name + ".json", "rb"))
 
@@ -955,6 +1111,11 @@ if __name__ == "__main__":
     attr_parent_type = {key: list(val) for key, val in attr_parent_type.items()}
     attribute_head_tail = {key: list(val) for key, val in attribute_head_tail.items()}
 
+    timestamp = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+    out_dir = check_dir("output/" + timestamp)
+    run = 0
+    output_file = os.path.join(out_dir, "{}_{}.log".format(dataset_name, run))
+
     # Build evaluator
     evaluator = AttEvaluator(
         attr2idx,
@@ -966,6 +1127,7 @@ if __name__ == "__main__":
         threshold=0.5,
         top_k=8,
         exclude_atts=[],
+        output_file=output_file
     )
 
     # Set the ground truth labels
@@ -979,19 +1141,13 @@ if __name__ == "__main__":
     # Set the predictions
     random_predictions = np.random.rand(len(ground_truth_labels), len(attr2idx)).astype("float")
 
-    #TODO Predict zero shot here
-    # ....
-
+    # TODO compare logits with prediction (Evaluator part)
     # Run evaluation
-    output_file_fun = os.path.join("output", "{}_random.log".format(dataset_name))
     results = evaluator.print_evaluation(
         pred=random_predictions.copy(),
         gt_label=ground_truth_labels.copy(),
-        output_file=output_file_fun
     )
-    # Print results in table
-    print_metric_table(evaluator, results)
 
+    print_metric_table(evaluator, results)
     # import ipdb;
-    #
     # ipdb.set_trace()
