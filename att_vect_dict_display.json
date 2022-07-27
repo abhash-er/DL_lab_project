@@ -1,0 +1,173 @@
+{
+    "cleanliness": {
+        "clean/neat/tidy": -1,
+        "unclean/untidy/dirt/dirty/muddy": -1
+    },
+    "clothes color": {
+        "black": -1,
+        "blue": -1,
+        "brown": -1,
+        "gray": -1,
+        "green": -1,
+        "orange": -1,
+        "pink": -1,
+        "red": -1,
+        "tan": -1,
+        "violet": -1,
+        "white": -1,
+        "yellow": -1
+    },
+    "clothes pattern": {
+        "checkered": -1,
+        "dotted/speckled/spotted": -1,
+        "floral": -1,
+        "lettered": -1,
+        "plaid/tartan": -1,
+        "plain": -1,
+        "striped/lined/pinstriped": -1,
+        "tiled": -1
+    },
+    "color quantity": {
+        "multicolored/colorful": -1,
+        "single-colored/unicolored": -1,
+        "two-colored": -1
+    },
+    "color": {
+        "black": -1,
+        "blue": -1,
+        "brown": -1,
+        "gray": -1,
+        "green": -1,
+        "orange": -1,
+        "pink": -1,
+        "red": -1,
+        "tan": -1,
+        "violet": -1,
+        "white": -1,
+        "yellow": -1
+    },
+    "cooked": {
+        "cooked/baked/warmed": -1,
+        "raw/fresh": -1
+    },
+    "face expression": {
+        "angry/mad": -1,
+        "disgust/frowning": -1,
+        "fear/surprise": -1,
+        "happy/smiling/laughing/grinning/joyful": -1,
+        "neutral/calm/serious": -1,
+        "sad/unhappy": -1,
+        "sleepy/sleeping": -1
+    },
+    "gender": {
+        "female/woman/girl": -1,
+        "male/man/guy/boy": -1
+    },
+    "group": {
+        "group": -1,
+        "single": -1
+    },
+    "hair color": {
+        "black": -1,
+        "blue": -1,
+        "brown": -1,
+        "gray": -1,
+        "green": -1,
+        "orange": -1,
+        "pink": -1,
+        "red": -1,
+        "tan": -1,
+        "violet": -1,
+        "white": -1,
+        "yellow": -1
+    },
+    "hair length": {
+        "bald": -1,
+        "long": -1,
+        "short": -1
+    },
+    "hair tone": {
+        "dark/obscure": -1,
+        "light/bright/shiny": -1
+    },
+    "hair type": {
+        "curly/curled": -1,
+        "straight": -1
+    },
+    "length": {
+        "long": -1,
+        "short": -1
+    },
+    "material": {
+        "asphalt/cement/clay/concrete/stucco": -1,
+        "ceramic/brick/ceramic/porcelain": -1,
+        "glass": -1,
+        "leather": -1,
+        "metal/metallic/aluminum/brass/copper-zinc/iron/stainless steel/steel/silver": -1,
+        "paper/cardboard": -1,
+        "polymers/plastic/rubber/styrofoam/polymer": -1,
+        "stone/granite/cobblestone/gravel/marble/pebbled/rocky/sandy": -1,
+        "textile/cloth/fabric/denim/cotton/jean/silk/plush": -1,
+        "wood/wooden/bamboo/hardwood": -1
+    },
+    "maturity": {
+        "adult/old/aged": -1,
+        "young/baby": -1
+    },
+    "optical property": {
+        "opaque": -1,
+        "reflective": -1,
+        "transparent/translucent": -1
+    },
+    "order": {
+        "messy/disordered/unordered/disorganized/unorganized/cluttered": -1,
+        "ordered/arranged/organized": -1
+    },
+    "pattern": {
+        "checkered": -1,
+        "dotted/speckled/spotted": -1,
+        "floral": -1,
+        "lettered": -1,
+        "plaid/tartan": -1,
+        "plain": -1,
+        "striped/lined/pinstriped": -1,
+        "tiled": -1
+    },
+    "position": {
+        "horizontal/lying": -1,
+        "sitting/sit": -1,
+        "vertical/upright/standing": -1
+    },
+    "size": {
+        "big/large/giant/huge": -1,
+        "small/little/tiny": -1
+    },
+    "skin tone": {
+        "dark/obscure": -1,
+        "light/bright/shiny": -1
+    },
+    "state": {
+        "closed": -1,
+        "covered": -1,
+        "cracked": -1,
+        "dilapidated/ruined/broken": -1,
+        "dry": -1,
+        "empty": -1,
+        "folded": -1,
+        "full/whole": -1,
+        "off": -1,
+        "on": -1,
+        "open": -1,
+        "piece/cut": -1,
+        "wet": -1
+    },
+    "texture": {
+        "smooth/sleek": -1,
+        "soft/fluffy/flossy/furry/hairy": -1,
+        "tough/hard/rough": -1
+    },
+    "tone": {
+        "dark/obscure": -1,
+        "light/bright/shiny": -1
+    }
+}

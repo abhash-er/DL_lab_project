@@ -1,0 +1,73 @@
+# print(na_pairs)
+# nouns_to_check = get_nouns_cat_list(
+#     ["man", "kitchen", "pizza", "bottle"], "Food")
+# print(nouns_to_check)
+
+# bbox -> category-> bottle ,  supercategory -> Kitchen
+# bbox -> category-> knife,  supercategory -> Kitchen -> ["knife", "other"]
+# candidate_label = ["bottle", "other"]
+# nouns = {"bottle", "knife", "kitchen"}
+# search in noun for noun associared with bottle
+
+# obj = "bottle"
+# super_cat = "kitchen"
+# list_cat = ["person", "animal", "food"]
+# na_pairs = ["person", "kitchen", "bottle", "flask", "beaker"]
+# candidate_labels = [obj, "other"]
+# for noun in na_pairs:
+#     results = classifier(noun, candidate_labels)
+#     print(results["labels"][0])
+#     # if results["labels"][0] in category:
+#     #     nouns_cat_list.append(noun)
+
+#     Image
+#     bbject: [chair, table, bottle]
+#     super_cat: furniture, kitchen
+
+#     captions: [white stool with a pan on the wooden table]
+#     na_pair: [stool: "white", table: "wooden"]
+
+#     nouns: stool, table, pan
+
+
+#     stool -> furniture -> other
+#     table -> furniture -> other
+#     pan -> kitchen -> other
+
+
+results = classifier("bottle", [
+    "pans",
+    "rolling",
+    "stove",
+    "dough",
+    "baker",
+    "kitchen",
+    "pizzas",
+    "table",
+    "wall",
+    "man",
+    "pots",
+    "person",
+    "front",
+    "pies"
+])
+print(results)
+
+
+bbx -> bottle(kitchen) ->
+na_pairs = [
+    "pans",
+    "rolling",
+    "stove",
+    "dough",
+    "baker",
+    "kitchen",
+    "pizzas",
+    "table",
+    "wall",
+    "man",
+    "pots",
+    "person",
+    "front",
+    "pies"
+],
