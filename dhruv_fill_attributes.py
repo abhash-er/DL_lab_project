@@ -8,9 +8,11 @@ from na import get_na_pairs
 import json
 from sentence_transformers import SentenceTransformer, util
 import numpy as np
+import gensim.downloader
 
 # classifier = pipeline("zero-shot-classification")
-classifier = pipeline("fill-mask", top_k=300)
+classifier = pipeline("fill-mask", top_k=300, model="distilroberta-base")
+glove_vectors = gensim.downloader.load('glove-wiki-gigaword-50')
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 candidate_labels = ["Person", "Vehicle", "Outdoor", "Animal", "Sports", "Kitchenware", "Food", "Furniture", "Electronics",
                     "Appliance", "Indoor", "Cloth"]
@@ -72,6 +74,19 @@ def build_cat_supercat_dict():
         cat_supercat_dict[category["supercategory"]
                           ] = category["supercategory"]
     # print(cat_supercat_dict)
+
+
+def get_noun_associated_category_name_supercategory_w2v(noun):
+    relevant_objects = []
+    results = glove_vectors.most_similar(noun, topn=50)
+    # print(len(results))
+    print("W2V Possible Choices => ")
+    # print([x[0] for x in results])
+    for key, value in results:
+        if key in cat_supercat_dict:
+            relevant_objects.append(key)
+    print("W2V Relevant Choices => ")
+    print(relevant_objects)
 
 
 def generate_synonmys_for_noun(noun, object_list):
@@ -210,6 +225,7 @@ if __name__ == "__main__":
             if noun in caption:
                 cat_name, super_cat = get_noun_associated_category_name_supercategory(
                     noun, caption)
+                get_noun_associated_category_name_supercategory_w2v(noun)
                 # if cat_name is not None and super_cat is not None:
                 #     possible_instances_bbx.append({super_cat: cat_name})
                 # cat_name, super_cat = get_noun_associated_category_name_supercategory(
