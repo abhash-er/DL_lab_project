@@ -56,6 +56,8 @@ def get_noun_dependency(token, noun_adj, prev_token_text=""):
         for noun in noun_adj:
             if noun in children:
                 return noun
+        if token.head.text == prev_token_text:
+            return ""
         return get_noun_dependency(token.head, noun_adj)
 
     if token.head.text == prev_token_text:
