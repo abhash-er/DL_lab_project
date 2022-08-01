@@ -43,7 +43,16 @@ def create_dict_attr():
     global dict_attr
     for ann in annotation_list:
         attribute_type, attribute = ann.split(":")
-        dict_attr[attribute] = attribute_type
+        if attribute_type not in dict_attr.keys():
+            dict_attr[attribute_type] = []
+        attributes_list = attribute.split("/")
+        for attr in attributes_list:
+            dict_attr[attribute_type].append(attr)
+        # if len(attributes_list) == 1:
+        #     dict_attr[attribute_type].append(attributes_list[0])
+        # else:
+        #     dict_attr[attribute_type].append(attributes_list)
+        # dict_attr[attribute_type].append(attributes_list)
         # att_value_dict = {}
         # for a_value in attribute_values:
         #     att_value_dict[a_value] = -1
@@ -53,21 +62,21 @@ def create_dict_attr():
         # else:
         #     fill_att_dict[attribute_type] = {attribute: -1}
 
-    # take category and return associated nouns
+        # take category and return associated nouns
 
-    # def get_nouns_cat_list(na_pairs, category):
-    #     nouns_cat_list = []
-    #     if category == "other":
-    #         category = ["Vehicle", "Outdoor", "Sports", "Kitchenware", "Furniture", "Electronics",
-    #                     "Appliance", "Indoor"]
-    #     for noun in na_pairs:
-    #         results = classifier(noun, candidate_labels)
-    #         print(results["labels"][0])
-    #         if results["labels"][0] in category:
-    #             nouns_cat_list.append(noun)
-    #         else:
-    #             print("{} Not in {}".format(noun, category))
-    #     return nouns_cat_list
+        # def get_nouns_cat_list(na_pairs, category):
+        #     nouns_cat_list = []
+        #     if category == "other":
+        #         category = ["Vehicle", "Outdoor", "Sports", "Kitchenware", "Furniture", "Electronics",
+        #                     "Appliance", "Indoor"]
+        #     for noun in na_pairs:
+        #         results = classifier(noun, candidate_labels)
+        #         print(results["labels"][0])
+        #         if results["labels"][0] in category:
+        #             nouns_cat_list.append(noun)
+        #         else:
+        #             print("{} Not in {}".format(noun, category))
+        #     return nouns_cat_list
 
 
 def get_captions(img):
@@ -155,9 +164,11 @@ kitchen
 Noun/Adj => kitchen
 A small <mask> has various appliances and a table.
 
-Possible Choices => 
-['kitchen', 'restaurant', 'appliance', 'cafe', 'café', 'oven', 'diner', 'stove', 'house', 'House', 'house', 'cabinet', 'cooker', 'cafeteria', 'bedroom', 'grocery', 'furniture', 'household', 'room', 'room', 'bathroom', 'fridge', 'bowl', 'interior', 'sink', 'dish', 'place', 'grill', 'cottage', 'refrigerator', 'floor', 'garage', 'supermarket', 'tavern', 'shelf', 'bakery', 'establishment', 'garden', 'chapel', 'home', 'desk', 'studio', 'school', 'microwave', 'wardrobe', 'hut', 'mansion', 'pot', 'business']
-['kitchen', 'appliance', 'oven', 'furniture', 'bowl', 'sink', 'refrigerator', 'microwave']
+Possible Choices =>
+['kitchen', 'restaurant', 'appliance', 'cafe', 'café', 'oven', 'diner', 'stove', 'house', 'House', 'house', 'cabinet', 'cooker', 'cafeteria', 'bedroom', 'grocery', 'furniture', 'household', 'room', 'room', 'bathroom', 'fridge', 'bowl', 'interior', 'sink',
+    'dish', 'place', 'grill', 'cottage', 'refrigerator', 'floor', 'garage', 'supermarket', 'tavern', 'shelf', 'bakery', 'establishment', 'garden', 'chapel', 'home', 'desk', 'studio', 'school', 'microwave', 'wardrobe', 'hut', 'mansion', 'pot', 'business']
+['kitchen', 'appliance', 'oven', 'furniture',
+    'bowl', 'sink', 'refrigerator', 'microwave']
 Closest choice to the noun => kitchen
 Category Name => kitchen
 Super Category => kitchen
@@ -167,15 +178,16 @@ Noun/Adj => small
 A <mask> kitchen has various appliances and a table.
 prepend => small
 
-Possible Choices => 
-['small', 'tiny', 'smaller', 'large', 'larger', 'little', 'miniature', 'bigger', 'big', 'huge', 'mini', 'massive', 'giant', 'vast', 'spacious', 'round', 'suitable', 'compact', 'whole', 'regular', 'pocket', 'fitted', 'usable', 'modified', 'simple', 'standard', 'spare', 'black', 'bare', 'white', 'colorful', 'square', 'perfect', 'fancy', 'toy', 'cramped', 'minimalist', 'comparable', 'mixed', 'used', 'clean', 'heated', 'basic', 'style', 'main', 'nearby', 'full', 'decent', 'modest']
+Possible Choices =>
+['small', 'tiny', 'smaller', 'large', 'larger', 'little', 'miniature', 'bigger', 'big', 'huge', 'mini', 'massive', 'giant', 'vast', 'spacious', 'round', 'suitable', 'compact', 'whole', 'regular', 'pocket', 'fitted', 'usable', 'modified',
+    'simple', 'standard', 'spare', 'black', 'bare', 'white', 'colorful', 'square', 'perfect', 'fancy', 'toy', 'cramped', 'minimalist', 'comparable', 'mixed', 'used', 'clean', 'heated', 'basic', 'style', 'main', 'nearby', 'full', 'decent', 'modest']
 ['small', 'tiny', 'little']
 Closest choice to the noun => small
 Category Name => small
 size
 little
 Adjective => small
-Closest Value : 
+Closest Value :
 Adj type => size
 Adj value => little
 
@@ -282,13 +294,17 @@ def make_all_categories_array(all_categories_json):
 
 
 def search_in_attr_dict(word):
-    for attr_values, attr_type in dict_attr.items():
-        for attr in attr_values.split("/"):
-            if(attr.lower() == word.lower()):
-                # print(attr_type)
-                # print(attr)
-                return attr, attr_type
-    return [None, None]
+    att_list = []
+    for attr_type in dict_attr:
+        # print(attr_type)
+        # print(attr_values)
+        # for attr in attr_values.split("/"):
+        
+        if word.lower() in dict_attr[attr_type]:
+            att_list.append({attr_type, word.lower()})
+    if len(att_list) != 0:
+        print(att_list)
+    return att_list
 
 
 def get_adj_associated_attribute_and_type(adj, caption):
@@ -314,9 +330,10 @@ def get_adj_associated_attribute_and_type(adj, caption):
 
         relevant_attr = []
         for possible_word in possible_words_list:
-            attr, attr_type = search_in_attr_dict(possible_word)
-            if attr is not None and attr_type is not None:
-                relevant_attr.append([attr, attr_type])
+            att_list = search_in_attr_dict(possible_word)
+            if len(att_list) != 0:
+                # print(att_list)
+                relevant_attr.append(att_list)
 
         # print(relevant_attr)
 
@@ -351,14 +368,15 @@ def get_adj_associated_attribute_and_type(adj, caption):
         # #     index_max = np.argmax(similarities)
         # # #     # print(index_max)
         # #     relevant_object = object_list[index_max]
-        print("Closest choice to the Adj => "+relevant_attr[0][0])
-        print("Attribute Value => "+relevant_attr[0][0])
+        print(relevant_attr)
+        # print("Closest choice to the Adj => "+relevant_attr[0][1])
+        # print("Attribute Value => "+relevant_attr[0][1])
 
-        print("Attribute Type => "+relevant_attr[0][1])
-        # Printing all instances relating to the corresponding caption
-        # print(all_instances_relatedto_caption(
-        #     relevant_objects[0], cat_supercat_dict[relevant_objects[0]]))
-        return [relevant_attr[0][0], relevant_attr[0][1]]
+        # print("Attribute Type => "+relevant_attr[0][0])
+        # # Printing all instances relating to the corresponding caption
+        # # print(all_instances_relatedto_caption(
+        # #     relevant_objects[0], cat_supercat_dict[relevant_objects[0]]))
+        # return [relevant_attr[0][0], relevant_attr[0][1]]
     else:
         print("Skipping adjective as not present in the sentence...")
         return [None, None]
@@ -379,7 +397,7 @@ if __name__ == "__main__":
     # print(fill_att_dict)
 
     create_dict_attr()
-    # print(json.dumps(dict_attr, indent=4))
+    print(json.dumps(dict_attr, indent=4))
 
     all_categories_json = instances_val_json["categories"]
     all_categories_array = make_all_categories_array(all_categories_json)
@@ -387,9 +405,12 @@ if __name__ == "__main__":
     build_cat_supercat_dict()
     # print(json.dumps(cat_supercat_dict, indent=4, sort_keys=True))
 
+    # get_adj_associated_attribute_and_type(
+    #     "small", "A small kitchen has various appliances and a table")
+
     #  First get the image from captions file
     index = 0
-    for index in range(5):
+    for index in range(10):
         # if index == 2:
         #     break
         img = captions_val_json["images"][index]
@@ -419,21 +440,22 @@ if __name__ == "__main__":
                         for adj in adjs:
                             att_type, att_value = get_adj_associated_attribute_and_type(
                                 adj, caption)
-                    #     print("Adjective => "+str(adj))
-                    #     print("Closest Value : ")
-                    #     print("Adj type => "+str(att_type))
-                    #     print("Adj value => "+str(att_value))
-                    #     print("-----------------------------------------")
 
-            # get_noun_associated_category_name_supercategory_w2v(noun)
-            # if cat_name is not None and super_cat is not None:
-            #     possible_instances_bbx.append({super_cat: cat_name})
-            # cat_name, super_cat = get_noun_associated_category_name_supercategory(
-            #     "pans", "Man in apron standing on front of oven with pans and bakeware")
-            # print(cat_name)
-            # print(super_cat)
+    #     print("Adjective => "+str(adj))
+    #     print("Closest Value : ")
+    #     print("Adj type => "+str(att_type))
+    #     print("Adj value => "+str(att_value))
+    #     print("-----------------------------------------")
 
-            # classifier = pipeline("fill-mask", top_k=10)
-            # resulta = classifier(
-            #     "A <mask> is in a kitchen making pizzas")
-            # print(resulta)
+    # get_noun_associated_category_name_supercategory_w2v(noun)
+    # if cat_name is not None and super_cat is not None:
+    #     possible_instances_bbx.append({super_cat: cat_name})
+    # cat_name, super_cat = get_noun_associated_category_name_supercategory(
+    #     "pans", "Man in apron standing on front of oven with pans and bakeware")
+    # print(cat_name)
+    # print(super_cat)
+
+    # classifier = pipeline("fill-mask", top_k=10)
+    # resulta = classifier(
+    #     "A <mask> is in a kitchen making pizzas")
+    # print(resulta)

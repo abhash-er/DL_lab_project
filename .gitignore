@@ -10,3 +10,4 @@
 captions_val2017.json
 instances_val2017.json
 person_keypoints_val2017.json
+__pycache__/
