@@ -168,3 +168,35 @@ class CaptionDataset(Dataset):
         assert len(self.labels[idx]) >= 10
         # print(self.labels[idx])
         return img, self.caption_embeddings[idx][:10], self.labels[idx][:10]
+
+class ExtendedCustomDataset(Dataset):
+    def __init__(self, transform=None):
+        if transform is not None:
+            self.transform = transform
+        else:
+            self.transform = Compose([
+                Resize((224, 224), interpolation=BICUBIC),
+                ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.1),
+                # CenterCrop(224),
+                RandomHorizontalFlip(),
+                _convert_image_to_rgb,
+                ToTensor(),
+                Normalize((0.48145466, 0.4578275, 0.40821073), (0.26862954, 0.26130258, 0.27577711)),
+            ])
+
+        self.attribute_vectors = []
+        self.load_path = "datasets/cap/train/"
+        with open("datasets/cap/train_labels.pkl", 'rb') as f:
+            self.attribute_vectors = pickle.load(f)
+
+    def __getitem__(self, idx):
+        img_name = 'img_' + str(idx) + '.png'
+        img_path = os.path.join(self.load_path, img_name)
+        img = Image.open(img_path)
+        img = self.transform(img)
+        att_vector = np.array(self.attribute_vectors[idx])
+        att_vector[att_vector == -1] = 2
+        return img, att_vector
+
+    def __len__(self):
+        return len(self.attribute_vectors)
